@@ -14,20 +14,4 @@ export default function Home() {
 
 
 
-/*import type { Usuario } from "../entidades/Usuario";
-
-const Home = ({ usuario }: { usuario: Usuario }) => {
-  return (
-    <div className="home-container">
-      <h1>🐄 Gestión Agro</h1>
-      <p>Bienvenido, {usuario.nombre}!</p>
-      <p>Email: {usuario.email}</p>
-      <p>Rol: {usuario.rol}</p>
-    </div>
-  );
-};
-
-export default Home;*/
-
-
 
