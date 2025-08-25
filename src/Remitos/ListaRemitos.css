@@ -1,0 +1,100 @@
+/* Contenedor de la tabla */
+.contenedor {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Título */
+.contenedor h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c5046;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado */
+thead {
+  background-color: #177a44;
+  color: #fff;
+}
+
+thead th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Filas */
+tbody tr {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ecf1ee;
+}
+
+tbody tr:hover {
+  background-color: #d6eaf8;
+}
+
+/* Celdas */
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Mensaje de error */
+p {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+/* Contenedor del filtro + botón */
+.filtro-boton-container {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+}
+
+/* Botón de agregar remito */
+.btn-agregar {
+  margin-left: auto;
+  padding: 8px 16px;
+  background-color: #177a44;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-agregar:hover {
+background-color: #5dd8a3;
+  transform: scale(1.05);
+}
+
+.btn-eliminar {
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-eliminar:hover {
+  background-color: #1e8449;
+}
