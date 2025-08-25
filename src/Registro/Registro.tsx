@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/FirebaseConfig";
 import type { Usuario } from "../entidades/Usuario";
+import  "./css/Registro.css"
 
 export default function Registro() {
   const [nombre, setNombre] = useState("");
@@ -29,14 +30,14 @@ export default function Registro() {
     }
 
     try {
-      const credenciales = await createUserWithEmailAndPassword(auth, email, password);
-      const user = credenciales.user;
+      const credencialesFirebase = await createUserWithEmailAndPassword(auth, email, password);
+      const usuario = credencialesFirebase.user;
 
 
       const usuarioMongo: Partial<Usuario> = {
-        nombre: nombre || user.email?.split("@")[0],
-        email: user.email!,
-        rol: "usuario",
+        nombre: nombre || usuario.email?.split("@")[0],
+        email: usuario.email!,
+        rol: "USUARIO",
       };
 
       await fetch("http://localhost:3000/usuarios", {
@@ -51,37 +52,39 @@ export default function Registro() {
     }
   };
 
-  return (
-    <div>
-      <h2>Registro</h2>
-      <form onSubmit={handlerRegistro}>
-        <input
-          type="text"
-          placeholder="Nombre de usuario"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Confirmar contraseña"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <button type="submit">Registrar</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+   return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>Registro</h2>
+        <form onSubmit={handlerRegistro}>
+          <input
+            type="text"
+            placeholder="Nombre de usuario"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Confirmar contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button type="submit">Registrar</button>
+        </form>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 }

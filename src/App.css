@@ -3,8 +3,14 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}body, html, #root {
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2; /* gris claro */
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* evita barras raras */
 }
-
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -39,4 +45,13 @@
 
 .read-the-docs {
   color: #888;
+}
+.navbar-custom {
+  background-color: #a8d5ba;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1030; /* por encima del resto */
+  border: none; /* quita líneas raras */
 }

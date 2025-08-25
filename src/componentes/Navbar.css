@@ -1,0 +1,37 @@
+/* Barra superior */
+.navbar-custom {
+  background-color: #0c9d0e8d;
+}
+
+/* Menú lateral (offcanvas) */
+.offcanvas-custom {
+  background-color: #0c9d0e8d;
+  color: #000 !important;
+}
+
+/* Cuerpo del offcanvas */
+.offcanvas-custom .offcanvas-body {
+  background-color: #4ca24d8d;
+}
+
+/* Links */
+.offcanvas-custom .nav-link {
+  color: #000 !important;
+  font-weight: 500;
+  margin: 0.5rem 0;
+}
+
+.offcanvas-custom .nav-link:hover {
+  text-decoration: underline;
+  color: #1a1a1a !important;
+}
+
+/* Título del menú */
+.offcanvas-custom .offcanvas-title {
+  color: #000 !important;
+}
+
+/* Botón de cerrar */
+.offcanvas-custom .btn-close {
+  filter: invert(1);
+}

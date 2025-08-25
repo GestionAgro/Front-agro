@@ -5,17 +5,24 @@ import { auth } from "./config/FirebaseConfig";
 import Login from "./Registro/Login";
 import Registro from "./Registro/Registro";
 import Home from "./Registro/Home";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import ListarRemitos from "./Remitos/ListarRemitos";
+import AgregarRemito from "./Remitos/Agregarremito";
+import EliminarRemito from "./Remitos/EliminarRemito";
+
+
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+      setUser(user);
       setLoading(false);
     });
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   if (loading) return <p>Cargando...</p>;
@@ -23,12 +30,15 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Rutas privadas */}
-        <Route path="/" element={currentUser ? <Home /> : <Navigate to="/login" />} />
-        {/* Rutas públicas */}
-        <Route path="/login" element={!currentUser ? <Login /> : <Navigate to="/" />} />
-        <Route path="/registro" element={!currentUser ? <Registro /> : <Navigate to="/" />} />
+        <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+        <Route path="/registro" element={!user ? <Registro /> : <Navigate to="/" />} />
+         {/*rutas de remitos*/}
+        <Route path="/remitos" element={user ? <ListarRemitos /> : <Navigate to="/login" />} />
+        <Route path="/remitos/nuevo" element={<AgregarRemito />} />
+         <Route path="/remitos/eliminar/:id" element={<EliminarRemito />} />
       </Routes>
     </Router>
   );
 }
+
