@@ -87,7 +87,7 @@ useEffect(()=>{
               <td>{new Date(remito.fecha).toLocaleDateString()}</td>
               <td>{remito.empresa}</td>
               <td>{remito.detalle}</td>
-              <td>{remito.recibido_por}</td>
+              <td>{remito.recibido_por?.nombre || "Sin asignar"}</td>
               <td>
                 {remito.estado === "EN_ESPERA"? "En espera": remito.estado === "FACTURADO"? "Facturado" : remito.estado}
               </td>
