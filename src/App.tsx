@@ -8,8 +8,11 @@ import Home from "./Registro/Home";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ListarRemitos from "./Remitos/ListarRemitos";
-import AgregarRemito from "./Remitos/Agregarremito";
-import EliminarRemito from "./Remitos/EliminarRemito";
+import AgregarRemito from "./Remitos/AgregarRemito";
+import ListarFacturas from "./Facturas/ListarFacturas";
+import AgregarFactura from "./Facturas/AgregarFactura";
+import ListarEmpleados from "./personas/ListarPersonas";
+import AgregarEmpleado from "./personas/AgregarPersona";
 
 
 
@@ -36,7 +39,14 @@ export default function App() {
          {/*rutas de remitos*/}
         <Route path="/remitos" element={user ? <ListarRemitos /> : <Navigate to="/login" />} />
         <Route path="/remitos/nuevo" element={<AgregarRemito />} />
-         <Route path="/remitos/eliminar/:id" element={<EliminarRemito />} />
+
+         {/* Rutas de facturas */}
+        <Route path="/facturas" element={user ? <ListarFacturas /> : <Navigate to="/login" />} />
+        <Route path="/facturas/nueva" element={user ? <AgregarFactura /> : <Navigate to="/login" />} />
+
+        {/* Rutas de personas */}
+        <Route path="/empleados" element={user ? <ListarEmpleados /> : <Navigate to="/login" />} />
+        <Route path="/empleados/nuevo" element={<AgregarEmpleado />} />
       </Routes>
     </Router>
   );

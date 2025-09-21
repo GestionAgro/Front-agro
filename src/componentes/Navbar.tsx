@@ -36,10 +36,13 @@ export default function Navbar() {
                 <Link className="nav-link" to= "/remitos">Remitos</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Facturas</a>
+                <Link className="nav-link" to="/facturas">Facturas</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Stock</a>
+                <Link className="nav-link" to="/stock">Stock</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/empleados">Empleados</Link>
               </li>
             </ul>
           </div>

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiServer";
 import "./AgregarRemitos.css"
 import Modal from "../componentes/Modal";
+import type { Persona } from "../entidades/Persona";
 
 const AgregarRemito = () => {
   const [form, setForm] = useState({
@@ -17,7 +18,15 @@ const AgregarRemito = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [mensaje, setMensaje] = useState("");
+  const [personas, setPersonas] = useState<Persona[]>([]);
 
+  useEffect(() => {
+  const fetchPersonas = async () => {
+    const res = await apiClient.get("/personas");
+    setPersonas(res.data);
+  };
+  fetchPersonas();
+}, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -74,13 +83,19 @@ const AgregarRemito = () => {
           value={form.detalle}
           onChange={handleChange}
         />
-        <input
-          type="text"
+        <select
           name="recibido_por"
-          placeholder="Recibido por"
           value={form.recibido_por}
           onChange={handleChange}
-        />
+          required
+        >
+         <option value="">Selecciona una persona</option>
+         {personas.map((p) => (
+          <option key={p._id} value={p._id}>
+             {p.nombre} ({p.tipo_persona})
+          </option>
+       ))}
+        </select>
         <select name="estado" value={form.estado} onChange={handleChange}>
           <option value="EN_ESPERA">En espera</option>
           <option value="FACTURADO">Facturado</option>
