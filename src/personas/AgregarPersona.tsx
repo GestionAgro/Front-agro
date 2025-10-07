@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiServer";
-import "../Remitos/AgregarRemitos.css";
+import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
 
 const AgregarEmpleado = () => {

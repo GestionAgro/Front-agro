@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/apiServer";
-import "../Remitos/ListaRemitos.css";
+import "../Remitos/css/ListaRemitos.css";
 import Modal from "../componentes/Modal";
 import { useNavigate } from "react-router-dom";
 import type { Persona } from "../entidades/Persona";
+import PersonasTable from "./PersonasTable";
 
 const ListarEmpleados = () => {
   const [empleados, setEmpleados] = useState<Persona[]>([]);
@@ -52,32 +53,7 @@ const ListarEmpleados = () => {
         Agregar Empleado
       </button>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Tipo</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {empleados.map((empleado) => (
-            <tr key={empleado._id}>
-              <td>{empleado.nombre}</td>
-              <td>{empleado.tipo_persona}</td>
-              <td>
-                <button
-                  type="button"
-                  className="btn-eliminar"
-                  onClick={() => confirmarEliminar(empleado)}
-                >
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+       <PersonasTable rows={empleados} onDelete={confirmarEliminar} />
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         <h2>¿Eliminar empleado?</h2>

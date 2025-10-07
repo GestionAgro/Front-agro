@@ -1,0 +1,81 @@
+.ver-factura {
+  max-width: 600px;
+  margin: 100px auto 20px;
+  padding: 25px;
+  background-color: #c7d4c8;
+  border: 1px solid #2c805b;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* titulo */
+.ver-factura h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2c5046;
+}
+
+
+.ver-factura p {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin: 6px 0;
+  border: 1px solid #1c773c;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 15px;
+}
+
+/* Nombre del campo */
+.ver-factura p strong {
+  color: #2c5046;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+/* Valor de la propiedad */
+.ver-factura p span {
+  color: #07311a;
+  font-weight: 500;
+}
+
+/* Hover para resaltar fila */
+.ver-factura p:hover {
+  background-color: #b9e7c6;
+}
+
+.ver-factura .campo {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  margin: 6px 0;
+  border: 1px solid #1c773c;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 15px;
+}
+
+.ver-factura .campo strong {
+  color: #2c5046;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.ver-factura .productos-lista {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  gap: 4px;
+}
+
+.ver-factura .producto-item {
+  color: #07311a;
+  font-weight: 500;
+  border: none;
+  background: none;
+}
+.ver-factura .producto-item:hover {
+  background-color: #b9e7c6;
+}

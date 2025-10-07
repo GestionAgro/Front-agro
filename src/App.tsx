@@ -13,7 +13,11 @@ import ListarFacturas from "./Facturas/ListarFacturas";
 import AgregarFactura from "./Facturas/AgregarFactura";
 import ListarEmpleados from "./personas/ListarPersonas";
 import AgregarEmpleado from "./personas/AgregarPersona";
-
+import VerFactura from "./Facturas/VerFacturas";
+import VerRemito from "./Remitos/VerRemito";
+import AgregarProducto from "./Stock/AgregarProducto";
+import ListarProductos from "./Stock/ListarProductos";
+import Navbar from "./componentes/Navbar";
 
 
 export default function App() {
@@ -32,6 +36,7 @@ export default function App() {
 
   return (
     <Router>
+      {user && <Navbar/>}
       <Routes>
         <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
@@ -39,14 +44,19 @@ export default function App() {
          {/*rutas de remitos*/}
         <Route path="/remitos" element={user ? <ListarRemitos /> : <Navigate to="/login" />} />
         <Route path="/remitos/nuevo" element={<AgregarRemito />} />
-
+        <Route path="/remitos/:id" element={user ? <VerRemito /> : <Navigate to="/login" />} />
          {/* Rutas de facturas */}
         <Route path="/facturas" element={user ? <ListarFacturas /> : <Navigate to="/login" />} />
         <Route path="/facturas/nueva" element={user ? <AgregarFactura /> : <Navigate to="/login" />} />
-
+        <Route path="/facturas/:id" element={user ? <VerFactura /> : <Navigate to="/login" />} />
         {/* Rutas de personas */}
         <Route path="/empleados" element={user ? <ListarEmpleados /> : <Navigate to="/login" />} />
         <Route path="/empleados/nuevo" element={<AgregarEmpleado />} />
+        {/* Rutas de productos */}
+        <Route path="/productos" element={user ? <ListarProductos /> : <Navigate to="/login" />} />
+        <Route path="/productos/nuevo" element={user ? <AgregarProducto /> : <Navigate to="/login" />} />
+
+
       </Routes>
     </Router>
   );

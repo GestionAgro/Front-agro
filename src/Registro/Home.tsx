@@ -1,6 +1,4 @@
 import React from "react";
-import { auth } from "../config/FirebaseConfig";
-import { signOut } from "firebase/auth";
 import Navbar from "../componentes/Navbar";
 import "./css/Home.css"
 
@@ -10,16 +8,9 @@ export default function Home() {
       <Navbar />
       <div style={{ marginTop: "150px" }}>
         <div className="home-container">
-          <h1>🐄 Bienvenido {auth.currentUser?.email}</h1>
-          <button onClick={() => signOut(auth)}>Cerrar sesión</button>
+          <h1></h1>
         </div>
       </div>
     </div>
   );
 }
-
-
-
-
-
-

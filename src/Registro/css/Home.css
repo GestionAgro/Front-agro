@@ -8,20 +8,28 @@ body, html, #root {
 
 /* Contenedor principal */
 .main-content {
-  margin-left: 250px; /* espacio para la sidebar */
+  margin-left: 0px;
   padding: 2rem;
-}
 
+
+  min-height: 100%;
+
+  background-image: url("/public/image/fondos-vaca.jpg");
+  background-size: cover;
+  background-position: center 15%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
 /* Caja del contenido */
-.home-container {
-  background-color: #ffffff; /* Fondo blanco para contraste */
+/*.home-container {
+  background-color:rgba(255, 255, 255, 0);;
   border-radius: 10px;
   padding: 2rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  max-width: 500px;
   margin: 2rem auto;
   text-align: center;
-}
+}*/
 
 /* Título */
 .home-container h1 {
@@ -31,7 +39,7 @@ body, html, #root {
 
 /* Botón cerrar sesión */
 .home-container button {
-  background-color: #a8d5ba; /* Verde claro como navbar */
+  background-color: #a8d5ba;
   color: #000;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -42,5 +50,5 @@ body, html, #root {
 }
 
 .home-container button:hover {
-  background-color: #96c8a2; /* Verde más oscuro al hover */
+  background-color: #96c8a2;
 }

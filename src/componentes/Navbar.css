@@ -1,12 +1,12 @@
 /* Barra superior */
 .navbar-custom {
-  background-color: #0c9d0e8d;
+  background-color: #21813e;
 }
 
 /* Menú lateral (offcanvas) */
 .offcanvas-custom {
-  background-color: #0c9d0e8d;
-  color: #000 !important;
+  background-color: #21813e;
+  color: #000 ;
 }
 
 /* Cuerpo del offcanvas */
@@ -16,7 +16,7 @@
 
 /* Links */
 .offcanvas-custom .nav-link {
-  color: #000 !important;
+  color: #000 ;
   font-weight: 500;
   margin: 0.5rem 0;
 }

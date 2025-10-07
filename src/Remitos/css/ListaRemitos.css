@@ -10,6 +10,7 @@
 .contenedor h1 {
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 55px;
   color: #2c5046;
 }
 
@@ -59,7 +60,6 @@ p {
   margin-top: 10px;
 }
 
-
 /* Contenedor del filtro + botón */
 .filtro-boton-container {
   display: flex;
@@ -81,36 +81,6 @@ p {
 }
 
 .btn-agregar:hover {
-background-color: #5dd8a3;
+  background-color: #5dd8a3;
   transform: scale(1.05);
 }
-
-.btn-eliminar {
-  background-color: #27ae60;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-eliminar:hover {
-  background-color: #1e8449;
-}
-
-
-.btn-asociar {
-  background-color: #27ae60;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-asociar:hover {
-  background-color: #1e8449;
-}
-
