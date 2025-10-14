@@ -45,11 +45,12 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
 
     return (
       <div
-        style={{display: "flex",justifyContent: "center",alignItems: "center", gap: "7px",width: "100%",height: "100%"}}>
+        style={{display: "flex", flexWrap: "wrap",justifyContent: "center",alignItems: "center", gap: "2px",width: "80%",height: "50%"}}>
          <Button
           variant="contained"
           color="primary"
           size="small"
+          sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
           onClick={() => navigate(`/facturas/${params.row._id}`)}
         >
           Ver
@@ -61,18 +62,29 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
             variant="contained"
             color="success"
             size="small"
+            sx={{ minWidth: 50, padding: "2px 4px", fontSize: "0.7rem" }}
             onClick={() => onAsociar && onAsociar(params.row)}
           >
-            Asociar
+            Aso
           </Button>
         )}
         <Button
           variant="contained"
           color="error"
           size="small"
+          sx={{ minWidth: 50, padding: "2px 4px", fontSize: "0.7rem" }}
           onClick={() => onDelete && onDelete(params.row)}
         >
-          Eliminar
+          Borrar
+        </Button>
+        <Button
+          variant="contained"
+          color="warning"
+          size="small"
+          sx={{ minWidth: 50, padding: "2px 4px", fontSize: "0.7rem" }}
+          onClick={() => navigate(`/facturas/${params.row._id}/editar`)}
+        >
+          Edit
         </Button>
       </div>
     );

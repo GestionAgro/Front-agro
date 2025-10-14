@@ -18,6 +18,7 @@ import VerRemito from "./Remitos/VerRemito";
 import AgregarProducto from "./Stock/AgregarProducto";
 import ListarProductos from "./Stock/ListarProductos";
 import Navbar from "./componentes/Navbar";
+import EditarFactura from "./Facturas/EditarFactura";
 
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
         <Route path="/facturas" element={user ? <ListarFacturas /> : <Navigate to="/login" />} />
         <Route path="/facturas/nueva" element={user ? <AgregarFactura /> : <Navigate to="/login" />} />
         <Route path="/facturas/:id" element={user ? <VerFactura /> : <Navigate to="/login" />} />
+        <Route path="/facturas/:id/editar" element={user ? <EditarFactura /> : <Navigate to="/login" />} />
         {/* Rutas de personas */}
         <Route path="/empleados" element={user ? <ListarEmpleados /> : <Navigate to="/login" />} />
         <Route path="/empleados/nuevo" element={<AgregarEmpleado />} />
