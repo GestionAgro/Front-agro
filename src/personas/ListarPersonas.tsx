@@ -49,6 +49,7 @@ const ListarEmpleados = () => {
      <button
         onClick={() => navigate("/empleados/nuevo")}
         className="btn-agregar"
+        style=padding-down
       >
         Agregar Empleado
       </button>

@@ -5,5 +5,6 @@ export type Usuario = {
   nombre: string;
   email: string;
   rol: Rol;
+  firebaseUid: string;
 }
 

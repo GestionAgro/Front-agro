@@ -9,12 +9,7 @@ interface Props {
   onSubmit: (e: React.FormEvent) => void;
 }
 
-const FormularioEditarFactura: React.FC<Props> = ({
-  factura,
-  onChange,
-  onPersonaChange,
-  onSubmit,
-}) => {
+const FormularioEditarFactura: React.FC<Props> = ({factura,onChange, onPersonaChange,onSubmit,}) => {
   return (
     <form onSubmit={onSubmit} className="form-factura">
       <div className="mb-3">
@@ -25,6 +20,7 @@ const FormularioEditarFactura: React.FC<Props> = ({
           value={factura.numero_factura}
           onChange={onChange}
           className="form-control"
+          disabled
         />
       </div>
 
@@ -36,6 +32,7 @@ const FormularioEditarFactura: React.FC<Props> = ({
           value={factura.numero_remito}
           onChange={onChange}
           className="form-control"
+          disabled
         />
       </div>
 
@@ -81,6 +78,7 @@ const FormularioEditarFactura: React.FC<Props> = ({
           name="estado"
           value={factura.estado}
           onChange={onChange}
+          disabled
           className="form-select"
         >
           <option value="PENDIENTE">Pendiente</option>
@@ -92,10 +90,11 @@ const FormularioEditarFactura: React.FC<Props> = ({
         <label className="form-label">Recibido por</label>
         <input
           type="text"
-          value={factura.recibido_por?._id || ""}
+          value={factura.recibido_por?.nombre|| ""}
           onChange={(e) => onPersonaChange(e.target.value)}
+          disabled
           className="form-control"
-          placeholder="ID del empleado"
+
         />
       </div>
 

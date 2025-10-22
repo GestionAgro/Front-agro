@@ -38,6 +38,7 @@ export default function Registro() {
         nombre: nombre || usuario.email?.split("@")[0],
         email: usuario.email!,
         rol: "USUARIO",
+        firebaseUid: usuario.uid,
       };
 
       await fetch("http://localhost:3000/usuarios", {

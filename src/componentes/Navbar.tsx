@@ -46,6 +46,9 @@ export default function Navbar() {
               <li className="nav-item">
                 <Link className="nav-link" to="/empleados">Empleados</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/auditorias">Auditorías</Link>
+              </li>
             </ul>
           </div>
         </div>

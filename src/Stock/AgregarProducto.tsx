@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiServer";
 import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
+import { getAuth } from "firebase/auth";
 
 const AgregarProducto = () => {
   const [form, setForm] = useState({
@@ -25,7 +26,13 @@ const AgregarProducto = () => {
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
-    await apiClient.post("/producto", form);
+    const auth = getAuth();
+    const token = await auth.currentUser?.getIdToken();
+
+    await apiClient.post("/producto", form,{
+      headers: {Authorization:  `Bearer ${token}`}
+    });
+
     setMensaje("Producto agregado con éxito");
     setModalOpen(true);
 

@@ -4,6 +4,7 @@ import "../Remitos/css/ListaRemitos.css"
 import { useFetcher, useNavigate } from "react-router-dom";
 import Modal from "../componentes/Modal";
 import FacturasTable from "./FacturasTable";
+import { auth } from "../config/FirebaseConfig";
 
 
 const ListarFacturas = () => {
@@ -14,6 +15,7 @@ const ListarFacturas = () => {
   const [fechaFiltro, setFechaFiltro] = useState<string>("");
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [mensaje, setMensaje] = useState("");
   const [facturaSeleccionada, setFacturaSeleccionada] = useState<any>(null);
 
   const [modalAsociarOpen, setModalAsociarOpen] = useState(false);
@@ -60,7 +62,18 @@ const ListarFacturas = () => {
 
   const eliminarFactura = async () => {
     try {
-      await apiClient.delete(`/facturas/${facturaSeleccionada._id}`);
+      if (!auth.currentUser) {
+      setMensaje("Usuario no autenticado");
+      setModalOpen(true);
+      return;
+    }
+      const token = await auth.currentUser.getIdToken();
+
+      await apiClient.delete(`/facturas/${facturaSeleccionada._id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      });
       setFacturas(facturas.filter((f) => f._id !== facturaSeleccionada._id));
       setModalOpen(false);
     } catch (err) {
@@ -80,11 +93,22 @@ const ListarFacturas = () => {
     if (!remitoInput) return alert("Ingrese un número de remito");
 
     try {
+      if (!auth.currentUser) {
+      setMensaje("Usuario no autenticado");
+      setModalOpen(true);
+      return;
+    }
+    const token = await auth.currentUser.getIdToken();
+
       const response = await apiClient.put(
         `/facturas/${facturaSeleccionada._id}/asociar-remito`,
-        { numero_remito: Number(remitoInput), estado: "IMPUTADO" }
-      );
-
+        { numero_remito: Number(remitoInput), estado: "IMPUTADO" },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
       setFacturas(
         facturas.map((f) =>

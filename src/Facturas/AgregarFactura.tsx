@@ -4,6 +4,7 @@ import apiClient from "../api/apiServer";
 import "../Remitos/css/AgregarRemitos.css"
 import Modal from "../componentes/Modal";
 import type { Persona } from "../entidades/Persona";
+import { auth } from "../config/FirebaseConfig";
 
 const AgregarFactura = () => {
   const [form, setForm] = useState({
@@ -39,8 +40,24 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+
   try {
-    await apiClient.post("/facturas", form);
+    if (!auth.currentUser) {
+      setMensaje("Usuario no autenticado");
+      setModalOpen(true);
+      return;
+    }
+
+    //agarro el token de usuario atenticado
+    const token = await auth.currentUser.getIdToken();
+
+    // aca mando la factura con el header del usario
+    await apiClient.post("/facturas", form, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     setMensaje("Factura agregada con éxito");
     setModalOpen(true);
     setTimeout(() => {

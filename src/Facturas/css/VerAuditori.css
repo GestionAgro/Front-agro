@@ -1,0 +1,82 @@
+.ver-factura {
+  max-width: 700px;
+  margin: 50px auto 20px;
+  padding: 25px;
+  background-color: #c7d4c8;
+  border: 1px solid #2c805b;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* titulo */
+.ver-factura h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c5046;
+}
+
+/* p general */
+.ver-factura p {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin: 6px 0;
+  border: 1px solid #1c773c;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 15px;
+}
+
+.ver-factura p strong {
+  color: #2c5046;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.ver-factura p span {
+  color: #07311a;
+  font-weight: 500;
+}
+
+/* hover */
+.ver-factura p:hover {
+  background-color: #b9e7c6;
+}
+
+/* listas anidadas limpias */
+.ver-factura ul {
+  list-style-type: none; /* sin bullets */
+  padding-left: 0;
+  margin: 6px 0;
+}
+
+.ver-factura ul li {
+  background-color: #ffffff; /* mismo fondo que los p */
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ver-factura ul li strong {
+  color: #2c5046;
+  font-weight: 600;
+}
+
+.ver-factura ul li span {
+  color: #07311a;
+  font-weight: 500;
+}
+
+/* indentado para objetos anidados */
+.ver-factura ul ul {
+  padding-left: 15px; /* margen para subobjetos */
+}
+
+/* hover para items de lista */
+.ver-factura ul li:hover {
+  background-color: #f1f9f1;
+}

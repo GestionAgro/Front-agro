@@ -45,7 +45,7 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
 
     return (
       <div
-        style={{display: "flex", flexWrap: "wrap",justifyContent: "center",alignItems: "center", gap: "2px",width: "80%",height: "50%"}}>
+        style={{display: "flex", flexWrap: "wrap",justifyContent: "center",alignItems: "center", gap: "2px",width: "105%",height: "100%"}}>
          <Button
           variant="contained"
           color="primary"

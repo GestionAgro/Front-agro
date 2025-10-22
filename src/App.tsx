@@ -19,6 +19,8 @@ import AgregarProducto from "./Stock/AgregarProducto";
 import ListarProductos from "./Stock/ListarProductos";
 import Navbar from "./componentes/Navbar";
 import EditarFactura from "./Facturas/EditarFactura";
+import ListarAuditorias from "./Facturas/ListarAuditoriasFactura";
+import VerAuditoriaFactura from "./Facturas/VerAuditoriaFactura";
 
 
 export default function App() {
@@ -51,6 +53,8 @@ export default function App() {
         <Route path="/facturas/nueva" element={user ? <AgregarFactura /> : <Navigate to="/login" />} />
         <Route path="/facturas/:id" element={user ? <VerFactura /> : <Navigate to="/login" />} />
         <Route path="/facturas/:id/editar" element={user ? <EditarFactura /> : <Navigate to="/login" />} />
+        <Route path="/auditorias" element={user ? <ListarAuditorias /> : <Navigate to="/login" />} />
+        <Route path="/auditorias-factura/:id" element={user ? <VerAuditoriaFactura /> : <Navigate to="/login" />} />
         {/* Rutas de personas */}
         <Route path="/empleados" element={user ? <ListarEmpleados /> : <Navigate to="/login" />} />
         <Route path="/empleados/nuevo" element={<AgregarEmpleado />} />
