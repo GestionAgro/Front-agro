@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/FirebaseConfig";
@@ -21,9 +21,17 @@ import Navbar from "./componentes/Navbar";
 import EditarFactura from "./Facturas/EditarFactura";
 import ListarAuditorias from "./Facturas/ListarAuditoriasFactura";
 import VerAuditoriaFactura from "./Facturas/VerAuditoriaFactura";
+import ListarAuditoriasStock from "./Stock/ListarAuditoriasStock";
+import VerAuditoriaStock from "./Stock/VerAuditoriaStock";
+import EditarProducto from "./Stock/EditarProducto";
+import EditarPersona from "./personas/EditarPersona";
+import ListarAuditoriasRemito from "./Remitos/ListarAuditoriaRemito";
+import VerAuditoriaRemito from "./Remitos/VerAuditoriaRemito";
+
 
 
 export default function App() {
+
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -48,20 +56,26 @@ export default function App() {
         <Route path="/remitos" element={user ? <ListarRemitos /> : <Navigate to="/login" />} />
         <Route path="/remitos/nuevo" element={<AgregarRemito />} />
         <Route path="/remitos/:id" element={user ? <VerRemito /> : <Navigate to="/login" />} />
+        <Route path="/auditorias-remito" element={user ? <ListarAuditoriasRemito /> : <Navigate to="/login" />} />
+<Route path="/auditorias-remito/:id" element={user ? <VerAuditoriaRemito /> : <Navigate to="/login" />} />
          {/* Rutas de facturas */}
         <Route path="/facturas" element={user ? <ListarFacturas /> : <Navigate to="/login" />} />
         <Route path="/facturas/nueva" element={user ? <AgregarFactura /> : <Navigate to="/login" />} />
         <Route path="/facturas/:id" element={user ? <VerFactura /> : <Navigate to="/login" />} />
         <Route path="/facturas/:id/editar" element={user ? <EditarFactura /> : <Navigate to="/login" />} />
-        <Route path="/auditorias" element={user ? <ListarAuditorias /> : <Navigate to="/login" />} />
+        <Route path="/auditorias-factura" element={user ? <ListarAuditorias /> : <Navigate to="/login" />} />
         <Route path="/auditorias-factura/:id" element={user ? <VerAuditoriaFactura /> : <Navigate to="/login" />} />
         {/* Rutas de personas */}
         <Route path="/empleados" element={user ? <ListarEmpleados /> : <Navigate to="/login" />} />
         <Route path="/empleados/nuevo" element={<AgregarEmpleado />} />
+        <Route path="/empleado/editar/:id" element={user ? <EditarPersona /> : <Navigate to="/login" />} />
+
         {/* Rutas de productos */}
         <Route path="/productos" element={user ? <ListarProductos /> : <Navigate to="/login" />} />
         <Route path="/productos/nuevo" element={user ? <AgregarProducto /> : <Navigate to="/login" />} />
-
+        <Route path="/producto/editar/:id" element={user ? <EditarProducto /> : <Navigate to="/login" />} />
+        <Route path="/auditorias-stock" element={user ? <ListarAuditoriasStock /> : <Navigate to="/login" />} />
+        <Route path="/auditorias-stock/:id" element={user ? <VerAuditoriaStock /> : <Navigate to="/login" />} />
 
       </Routes>
     </Router>

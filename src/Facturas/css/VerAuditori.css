@@ -80,3 +80,15 @@
 .ver-factura ul li:hover {
   background-color: #f1f9f1;
 }
+
+.ver-factura span.valor-vacio {
+  background-color: #ffdddd;
+  color: #a10000;
+  border: 1px solid #ff4d4d;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-style: italic;
+  display: inline-block;
+  animation: parpadeo 1.5s infinite alternate;
+}

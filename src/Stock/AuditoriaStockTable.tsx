@@ -2,18 +2,18 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import type { AuditoriaFactura } from "../entidades/AuditoriaFactura";
+import type { AuditoriaStock } from "../entidades/AuditoriaStock";
 
-interface AuditoriasTableProps {
-  rows: AuditoriaFactura[];
+interface AuditoriasStockTableProps {
+  rows: AuditoriaStock[];
 }
 
-export default function AuditoriasFacturaTable({ rows }: AuditoriasTableProps) {
+export default function AuditoriasStockTable({ rows }: AuditoriasStockTableProps) {
   const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     { field: "nombre_usuario", headerName: "Usuario", flex: 1 },
-    { field: "numero_factura", headerName: "Factura Nº", flex: 1 },
+    { field: "id_stock", headerName: "Stock ID", flex: 1 },
     { field: "campo_modificado", headerName: "Campo Modificado", flex: 1 },
     { field: "descripcion", headerName: "Descripción", flex: 1 },
     {
@@ -36,7 +36,7 @@ export default function AuditoriasFacturaTable({ rows }: AuditoriasTableProps) {
           color="primary"
           size="small"
           sx={{ minWidth: 50, padding: "2px 4px", fontSize: "0.7rem" }}
-          onClick={() => navigate(`/auditorias-factura/${params.row._id}`)}
+          onClick={() => navigate(`/auditorias-stock/${params.row._id}`)}
         >
           Ver
         </Button>

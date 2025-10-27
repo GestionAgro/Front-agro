@@ -79,3 +79,10 @@
 .ver-factura .producto-item:hover {
   background-color: #b9e7c6;
 }
+.ver-factura span.valor-vacio {
+  background-color: #ffcccc;
+  color: #a10000;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}

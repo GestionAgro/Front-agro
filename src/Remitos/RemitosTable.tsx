@@ -43,20 +43,32 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
       sortable: false,
       width: 175,
       renderCell: (params) => (
-        <div style={{display: "flex",justifyContent: "center",alignItems: "center",gap: "7px",width: "100%",height: "100%"}}>
+        <div style={{display: "flex",justifyContent: "center",alignItems: "center", gap: "2px",width: "105%",height: "100%"}}>
           <Button
             variant="contained"
             color="primary"
             size="small"
+            sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => navigate(`/remitos/${params.row._id}`)}
           >
             Ver
           </Button>
+           <Button
+            variant="contained"
+            color="warning"
+            size="small"
+            sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
+            onClick={() => navigate(`/remitos/${params.row._id}/editar`)}
+          >
+            Edit
+          </Button>
+
 
           <Button
             variant="contained"
             color="error"
             size="small"
+            sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => onDelete && onDelete(params.row)}
           >
             Eliminar

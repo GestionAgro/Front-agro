@@ -7,5 +7,7 @@ export type AuditoriaFactura = {
   valor_nuevo: string;
   fecha_y_hora?: Date;
   descripcion: string;
+  numero_factura?: number;
+  nombre_usuario?: string;
 
 }

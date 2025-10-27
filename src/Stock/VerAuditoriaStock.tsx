@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/apiServer";
-import type { AuditoriaFactura } from "../entidades/AuditoriaFactura";
-import "./css/VerAuditori.css";
+import type { AuditoriaStock } from "../entidades/AuditoriaStock";
+import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
 
-interface ObjectViewerProps {
-  data: any;
-}
-
-const ObjectViewer = ({ data }: ObjectViewerProps) => {
+const ObjectViewer = ({ data }: { data: any }) => {
   if (data === null || data === undefined) return <span className="valor-vacio">-</span>;
   if (typeof data !== "object"){
     const isEmpty = data === "-" || data === null || data === "";
     return <span className={isEmpty ? "valor-vacio" : ""}>{String(data)}</span>;
+  }
+
+  if (Array.isArray(data)) {
+    return (
+      <ul>
+        {data.map((item, index) => (
+          <li key={index}>
+            <ObjectViewer data={item} />
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   return (
@@ -24,7 +32,10 @@ const ObjectViewer = ({ data }: ObjectViewerProps) => {
             <ObjectViewer data={value} />
           ) : (
             <span className={value === "-" || value === null || value === "" ? "valor-vacio" : ""}>
-              {String(value)}
+              {typeof value === "string" &&
+              /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)
+                ? new Date(value).toLocaleDateString("es-AR")
+                : String(value)}
             </span>
           )}
         </li>
@@ -32,7 +43,6 @@ const ObjectViewer = ({ data }: ObjectViewerProps) => {
     </ul>
   );
 };
-
 
 const safeParse = (value: any) => {
   if (!value) return null;
@@ -44,51 +54,56 @@ const safeParse = (value: any) => {
     }
   }
   return value;
-}
+};
 
-const VerAuditoriaFactura = () => {
+const VerAuditoriaStock = () => {
   const { id } = useParams<{ id: string }>();
-  const [auditoria, setAuditoria] = useState<AuditoriaFactura | null>(null);
+  const [auditoria, setAuditoria] = useState<AuditoriaStock | null>(null);
   const [error, setError] = useState<string>("");
 
   const obtenerAuditoria = async () => {
     try {
-      const response = await apiClient.get(`/auditoriaFactura/${id}`);
+      const response = await apiClient.get(`/auditoriaStock/${id}`);
       setAuditoria(response.data);
-    } catch (err) {
+    } catch {
       setError("Error al obtener la auditoría");
     }
   };
 
   useEffect(() => {
-    if (id) {
-      obtenerAuditoria();
-    }
+    if (id) obtenerAuditoria();
   }, [id]);
 
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
-
-  if (!auditoria) {
-    return <p>Cargando auditoría...</p>;
-  }
+  if (error) return <p className="error">{error}</p>;
+  if (!auditoria) return <p>Cargando auditoría...</p>;
 
   return (
     <div className="ver-factura">
-      <h2>Auditoría de Factura</h2>
-      <p><strong>Numero Factura:</strong> <span>{auditoria.numero_factura}</span></p>
-      <p><strong>Usuario:</strong> <span>{auditoria.nombre_usuario}</span></p>
-      <p><strong>Campo Modificado:</strong> <span>{auditoria.campo_modificado}</span></p>
-      <p><strong>Descripción:</strong> <span>{auditoria.descripcion}</span></p>
+      <h2>Auditoría de Stock</h2>
+      <p>
+        <strong>Stock ID:</strong> <span>{auditoria.id_stock}</span>
+      </p>
+      <p>
+        <strong>Usuario:</strong> <span>{auditoria.nombre_usuario}</span>
+      </p>
+      <p>
+        <strong>Campo Modificado:</strong> <span>{auditoria.campo_modificado}</span>
+      </p>
+      <p>
+        <strong>Descripción:</strong> <span>{auditoria.descripcion}</span>
+      </p>
 
-      <p><strong>Valor Anterior:</strong></p>
+      <p>
+        <strong>Valor Anterior:</strong>
+      </p>
       <ObjectViewer data={safeParse(auditoria.valor_anterior)} />
 
-      <p><strong>Valor Nuevo:</strong></p>
+      <p>
+        <strong>Valor Nuevo:</strong>
+      </p>
       <ObjectViewer data={safeParse(auditoria.valor_nuevo)} />
     </div>
   );
 };
 
-export default VerAuditoriaFactura;
+export default VerAuditoriaStock;

@@ -5,6 +5,7 @@ import Modal from "../componentes/Modal";
 import { useNavigate } from "react-router-dom";
 import type { Producto } from "../entidades/Producto";
 import ProductosTable from "./ProductosTable";
+import { auth } from "../config/FirebaseConfig";
 
 const ListarProductos = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
@@ -40,7 +41,14 @@ const ListarProductos = () => {
 
   const eliminarProducto = async () => {
     try {
-      await apiClient.delete(`/producto/${productoSeleccionado?._id}`);
+      if(!auth.currentUser){
+              alert ("Usuario no autenticado");
+              return;
+            }
+      const token = await auth.currentUser.getIdToken();
+      await apiClient.delete(`/producto/${productoSeleccionado?._id}`,{
+        headers: {Authorization: `Bearer ${token}`,}
+      });
       setProductos(productos.filter((p) => p._id !== productoSeleccionado?._id));
       setModalEliminarOpen(false);
     } catch (err) {
@@ -52,8 +60,15 @@ const ListarProductos = () => {
  const ajustarStock = async () => {
     if (!productoSeleccionado) return;
     try {
+      if(!auth.currentUser){
+              alert ("Usuario no autenticado");
+              return;
+            }
+      const token = await auth.currentUser.getIdToken();
       const response = await apiClient.patch(`/producto/${productoSeleccionado._id}/ajustar`, {
         cantidad: -cantidadStock,
+      },{
+        headers: { Authorization: `Bearer ${token}`}
       });
       setProductos(
         productos.map((p) => (p._id === productoSeleccionado._id ? response.data : p))

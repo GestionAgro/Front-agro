@@ -4,6 +4,7 @@ import "./css/ListaRemitos.css";
 import { useNavigate } from "react-router-dom";
 import Modal from "../componentes/Modal";
 import RemitosTable from "./RemitosTable";
+import { auth } from "../config/FirebaseConfig";
 
 
  const ListarRemitos = () => {
@@ -33,7 +34,15 @@ useEffect(()=>{
 
   const eliminarRemito = async () => {
     try {
-      await apiClient.delete(`/remitos/${remitoSeleccionado._id}`);
+      if(!auth.currentUser){
+        alert ("Usuario no autenticado");
+        return;
+      }
+      const token = await auth.currentUser.getIdToken();
+      await apiClient.delete(`/remitos/${remitoSeleccionado._id}`,{
+        headers: {Authorization: `Bearer ${token}`,}
+      });
+
       setRemitos(remitos.filter((r) => r._id !== remitoSeleccionado._id));
       setModalOpen(false);
     } catch (err) {

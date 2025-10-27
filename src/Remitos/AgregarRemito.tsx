@@ -4,6 +4,7 @@ import apiClient from "../api/apiServer";
 import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
 import type { Persona } from "../entidades/Persona";
+import { auth } from "../config/FirebaseConfig";
 
 const AgregarRemito = () => {
   const [form, setForm] = useState({
@@ -63,7 +64,15 @@ const AgregarRemito = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await apiClient.post("/remitos", form);
+      if(!auth.currentUser){
+        setMensaje("usuario no autenticado");
+        setModalOpen(true);
+        return;
+      }
+      const token = await auth.currentUser.getIdToken();
+      await apiClient.post("/remitos", form,{
+        headers:{Authorization: `Bearer ${token}`},
+      });
       setMensaje("Remito agregado con éxito");
       setModalOpen(true);
 

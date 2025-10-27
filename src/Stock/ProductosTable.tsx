@@ -1,8 +1,7 @@
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-
-
+import { useNavigate } from "react-router-dom";
 
 interface ProductosTableProps {
   rows: any[];
@@ -10,7 +9,8 @@ interface ProductosTableProps {
   onAjustarStock? : (Producto: any) => void;
 }
 
-export default function ProductosTable({ rows, onDelete, onAjustarStock }: ProductosTableProps) {
+export default function ProductosTable({ rows, onDelete, onAjustarStock}: ProductosTableProps) {
+  const navigate = useNavigate();
   const columns: GridColDef[] = [
     { field: "nombre_producto", headerName: "Nombre", flex: 1 },
     { field: "cantidad_actual", headerName: "Cantidad Actual", flex: 1 },
@@ -21,20 +21,31 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock }: Produ
       sortable: false,
       width: 175,
       renderCell: (params) => (
-        <div style={{display: "flex",justifyContent: "center",alignItems: "center",gap: "7px",width: "100%",height: "100%"}}>
+        <div style={{display: "flex",justifyContent: "center",alignItems: "center", gap: "2px",width: "105%",height: "100%"}}>
           <Button
             variant="contained"
             color="primary"
             size="small"
+            sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => onAjustarStock && onAjustarStock(params.row)}
           >
             reducir
+          </Button>
+          <Button
+            variant="contained"
+            color="warning"
+            size="small"
+            sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
+            onClick={() => navigate(`/producto/editar/${params.row._id}`)}
+          >
+            Edit
           </Button>
 
           <Button
             variant="contained"
             color="error"
             size="small"
+            sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => onDelete && onDelete(params.row)}
           >
             Eliminar

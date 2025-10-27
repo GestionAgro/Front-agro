@@ -1,18 +1,28 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/apiServer";
-import type { AuditoriaFactura } from "../entidades/AuditoriaFactura";
-import "./css/VerAuditori.css";
+import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
+import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
 
-interface ObjectViewerProps {
-  data: any;
-}
+const ObjectViewer = ({ data }: { data: any }) => {
+  if (data === null || data === undefined)
+    return <span className="valor-vacio">-</span>;
 
-const ObjectViewer = ({ data }: ObjectViewerProps) => {
-  if (data === null || data === undefined) return <span className="valor-vacio">-</span>;
-  if (typeof data !== "object"){
+  if (typeof data !== "object") {
     const isEmpty = data === "-" || data === null || data === "";
     return <span className={isEmpty ? "valor-vacio" : ""}>{String(data)}</span>;
+  }
+
+  if (Array.isArray(data)) {
+    return (
+      <ul>
+        {data.map((item, index) => (
+          <li key={index}>
+            <ObjectViewer data={item} />
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   return (
@@ -24,7 +34,9 @@ const ObjectViewer = ({ data }: ObjectViewerProps) => {
             <ObjectViewer data={value} />
           ) : (
             <span className={value === "-" || value === null || value === "" ? "valor-vacio" : ""}>
-              {String(value)}
+              {typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)
+                ? new Date(value).toLocaleDateString("es-AR")
+                : String(value)}
             </span>
           )}
         </li>
@@ -44,40 +56,33 @@ const safeParse = (value: any) => {
     }
   }
   return value;
-}
+};
 
-const VerAuditoriaFactura = () => {
+const VerAuditoriaRemito = () => {
   const { id } = useParams<{ id: string }>();
-  const [auditoria, setAuditoria] = useState<AuditoriaFactura | null>(null);
+  const [auditoria, setAuditoria] = useState<AuditoriaRemito | null>(null);
   const [error, setError] = useState<string>("");
 
   const obtenerAuditoria = async () => {
     try {
-      const response = await apiClient.get(`/auditoriaFactura/${id}`);
+      const response = await apiClient.get(`/auditoriaRemito/${id}`);
       setAuditoria(response.data);
-    } catch (err) {
+    } catch {
       setError("Error al obtener la auditoría");
     }
   };
 
   useEffect(() => {
-    if (id) {
-      obtenerAuditoria();
-    }
+    if (id) obtenerAuditoria();
   }, [id]);
 
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
-
-  if (!auditoria) {
-    return <p>Cargando auditoría...</p>;
-  }
+  if (error) return <p className="error">{error}</p>;
+  if (!auditoria) return <p>Cargando auditoría...</p>;
 
   return (
     <div className="ver-factura">
-      <h2>Auditoría de Factura</h2>
-      <p><strong>Numero Factura:</strong> <span>{auditoria.numero_factura}</span></p>
+      <h2>Auditoría de Remito</h2>
+      <p><strong>Numero Remito:</strong> <span>{auditoria.numero_remito}</span></p>
       <p><strong>Usuario:</strong> <span>{auditoria.nombre_usuario}</span></p>
       <p><strong>Campo Modificado:</strong> <span>{auditoria.campo_modificado}</span></p>
       <p><strong>Descripción:</strong> <span>{auditoria.descripcion}</span></p>
@@ -91,4 +96,4 @@ const VerAuditoriaFactura = () => {
   );
 };
 
-export default VerAuditoriaFactura;
+export default VerAuditoriaRemito;
