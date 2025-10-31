@@ -2,6 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../componentes/AuthContex";
 
 interface ProductosTableProps {
   rows: any[];
@@ -11,11 +12,15 @@ interface ProductosTableProps {
 
 export default function ProductosTable({ rows, onDelete, onAjustarStock}: ProductosTableProps) {
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
+
   const columns: GridColDef[] = [
     { field: "nombre_producto", headerName: "Nombre", flex: 1 },
     { field: "cantidad_actual", headerName: "Cantidad Actual", flex: 1 },
+  ];
 
- {
+    if ( hasPermission("editar") || hasPermission("eliminar") || hasPermission("reducir")) {
+  columns.push({
       field: "acciones",
       headerName: "Acciones",
       sortable: false,
@@ -51,9 +56,10 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock}: Produc
             Eliminar
           </Button>
         </div>
-      ),
-    },
-  ];
+      )
+  });
+}
+
 
   return (
     <Paper sx={{ height: 500, width: "100%" }}>

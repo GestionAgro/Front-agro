@@ -84,3 +84,33 @@ p {
   background-color: #5dd8a3;
   transform: scale(1.05);
 }
+
+/* Campo de selección de empleado en el modal */
+.campo-empleado {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: inherit;
+}
+
+.campo-empleado label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #2c5046;
+}
+
+.campo-empleado select {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo-empleado select:focus {
+  border-color: #177a44;
+  box-shadow: 0 0 0 2px rgba(23, 122, 68, 0.2);
+  outline: none;
+}

@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 
 import { auth } from "../config/FirebaseConfig";
 import { Link } from "react-router-dom";
 import  "./css/Registro.css"
+import type { Usuario } from "../entidades/Usuario";
 
 const google = new GoogleAuthProvider();
 
@@ -36,13 +37,33 @@ const handleGoogleLogin = async() =>{
     const usuario = resultado.user;
 
     console.log("Login con Google exitoso:", usuario.email);
+
+    const usuarioMongo: Partial<Usuario> = {
+      nombre: usuario.displayName || usuario.email?.split("@")[0],
+      email: usuario.email!,
+      rol: "USUARIO",
+      firebaseUid: usuario.uid,
+    };
+   const existe = await fetch(`http://localhost:3000/usuarios/uid/${usuario.uid}`);
+    if (existe.status === 404) {
+
+      await fetch("http://localhost:3000/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(usuarioMongo),
+      });
+      console.log("usuario google guardado en Mongo");
+    } else {
+      console.log("usuario google ya existe en Mongo");
+    }
+
   } catch (err: any) {
     setError(err.message);
   }
 };
   return (
-<div className="auth-container">
-  <div className="auth-card">
+  <div className="auth-container">
+    <div className="auth-card">
     <h2>Login 🐮</h2>
     <form onSubmit={handleLogin}>
       <input

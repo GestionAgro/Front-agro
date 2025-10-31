@@ -2,6 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../componentes/AuthContex";
 
 
 interface PersonasTableProps {
@@ -11,11 +12,15 @@ interface PersonasTableProps {
 
 export default function PersonasTable({ rows, onDelete }: PersonasTableProps) {
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
+
   const columns: GridColDef[] = [
     { field: "nombre", headerName: "Nombre", flex: 1 },
     { field: "tipo_persona", headerName: "Tipo", flex: 1 },
+  ]
+   if ( hasPermission("editar") || hasPermission("eliminar")) {
+  columns.push({
 
- {
       field: "acciones",
       headerName: "Acciones",
       sortable: false,
@@ -42,9 +47,9 @@ export default function PersonasTable({ rows, onDelete }: PersonasTableProps) {
             Eliminar
           </Button>
         </div>
-      ),
-    },
-  ];
+  )
+  });
+}
 
   return (
     <Paper sx={{ height: 500, width: "100%" }}>

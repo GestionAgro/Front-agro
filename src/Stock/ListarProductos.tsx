@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import type { Producto } from "../entidades/Producto";
 import ProductosTable from "./ProductosTable";
 import { auth } from "../config/FirebaseConfig";
+import { useAuth } from "../componentes/AuthContex";
+import type { Persona } from "../entidades/Persona";
 
 const ListarProductos = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
@@ -15,6 +17,10 @@ const ListarProductos = () => {
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null);
   const [cantidadStock, setCantidadStock] = useState<number>(0);
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
+  const [personas, setPersonas] = useState<Persona[]>([]);
+  const [personaSeleccionada, setPersonaSeleccionada] = useState<string>("");
+
 
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -28,6 +34,19 @@ const ListarProductos = () => {
     obtenerProductos();
   }, []);
 
+  useEffect(() => {
+  const obtenerPersonas = async () => {
+    try {
+      const response = await apiClient.get("/personas");
+      setPersonas(response.data);
+    } catch (err) {
+      console.error("Error al obtener personas");
+    }
+  };
+
+  obtenerPersonas();
+}, []);
+
   const confirmarEliminar = (producto: Producto) => {
     setProductoSeleccionado(producto);
     setModalEliminarOpen(true);
@@ -36,6 +55,7 @@ const ListarProductos = () => {
     const abrirModalStock = (producto: Producto) => {
     setProductoSeleccionado(producto);
     setCantidadStock(0);
+    setPersonaSeleccionada("");
     setModalStockOpen(true);
   };
 
@@ -59,6 +79,10 @@ const ListarProductos = () => {
 
  const ajustarStock = async () => {
     if (!productoSeleccionado) return;
+    if (!personaSeleccionada) {
+    alert("Seleccioná quién retira el producto");
+    return;
+  }
     try {
       if(!auth.currentUser){
               alert ("Usuario no autenticado");
@@ -67,6 +91,7 @@ const ListarProductos = () => {
       const token = await auth.currentUser.getIdToken();
       const response = await apiClient.patch(`/producto/${productoSeleccionado._id}/ajustar`, {
         cantidad: -cantidadStock,
+        id_persona_retiro: personaSeleccionada,
       },{
         headers: { Authorization: `Bearer ${token}`}
       });
@@ -74,6 +99,7 @@ const ListarProductos = () => {
         productos.map((p) => (p._id === productoSeleccionado._id ? response.data : p))
       );
       setModalStockOpen(false);
+
     } catch (err: any) {
       alert("Error al ajustar stock: " + err.message);
     }
@@ -85,12 +111,10 @@ const ListarProductos = () => {
         <h1>Lista de Productos</h1>
       </div>
       {error && <p className="error">{error}</p>}
-      <button
-        onClick={() => navigate("/productos/nuevo")}
-        className="btn-agregar"
-      >
-        Agregar Producto
+      {hasPermission("crear") && (
+      <button onClick={() => navigate("/productos/nuevo")}className="btn-agregar"> Agregar Producto
       </button>
+      )}
 
      <ProductosTable rows={productos} onDelete={confirmarEliminar} onAjustarStock={abrirModalStock} />
 
@@ -123,6 +147,20 @@ const ListarProductos = () => {
           <button onClick={() => setModalStockOpen(false)}>Cancelar</button>
           <button onClick={ajustarStock}>Descontar</button>
         </div>
+        <div className="campo-empleado">
+        <select
+          value={personaSeleccionada}
+          onChange={(e)=> setPersonaSeleccionada(e.target.value)}
+          >
+            <option value="">Seleccioná quién retira el producto</option>
+            {personas.map((p) => (
+              <option key={p._id} value={p._id}>
+                {p.nombre}
+              </option>
+            ))}
+        </select>
+        </div>
+
       </Modal>
     </div>
   );

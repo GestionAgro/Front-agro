@@ -21,6 +21,7 @@
   margin: 0.5rem 0;
 }
 
+
 .offcanvas-custom .nav-link:hover {
   text-decoration: underline;
   color: #1a1a1a !important;
@@ -30,8 +31,17 @@
 .offcanvas-custom .offcanvas-title {
   color: #000 !important;
 }
+.offcanvas-header {
+  background-color: #21813e;
+}
+
 
 /* Botón de cerrar */
 .offcanvas-custom .btn-close {
   filter: invert(1);
+  opacity: 1;
+}
+
+.offcanvas-backdrop {
+  display: none;
 }

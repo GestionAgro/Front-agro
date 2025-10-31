@@ -5,6 +5,7 @@ import { useFetcher, useNavigate } from "react-router-dom";
 import Modal from "../componentes/Modal";
 import FacturasTable from "./FacturasTable";
 import { auth } from "../config/FirebaseConfig";
+import { useAuth } from "../componentes/AuthContex";
 
 
 const ListarFacturas = () => {
@@ -21,6 +22,7 @@ const ListarFacturas = () => {
   const [modalAsociarOpen, setModalAsociarOpen] = useState(false);
   const [remitoInput, setRemitoInput] = useState("");
   const [remitosDisponibles, setRemitosDisponibles] = useState<any[]>([]);
+  const { hasPermission } = useAuth();
 
   useEffect(() => {
     const obtenerFacturas = async () => {
@@ -136,12 +138,11 @@ const ListarFacturas = () => {
           value={fechaFiltro}
           onChange={(e) => setFechaFiltro(e.target.value)}
         />
-        <button
-          onClick={() => navigate("/facturas/nueva")}
-          className="btn-agregar"
-        >
+        {hasPermission("crear") && (
+        <button onClick={() => navigate("/facturas/nueva")}className="btn-agregar">
           Agregar Factura
         </button>
+      )}
       </div>
 
       <FacturasTable

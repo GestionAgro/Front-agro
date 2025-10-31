@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../componentes/Modal";
 import RemitosTable from "./RemitosTable";
 import { auth } from "../config/FirebaseConfig";
+import { useAuth } from "../componentes/AuthContex";
 
 
  const ListarRemitos = () => {
@@ -13,6 +14,7 @@ import { auth } from "../config/FirebaseConfig";
     const [remitos, setRemitos] = useState<any[]> ([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [remitoSeleccionado, setRemitoSeleccionado] = useState<any>(null);
+    const { hasPermission } = useAuth();
 
 useEffect(()=>{
     const obtenerRemitos = async () => {
@@ -54,9 +56,11 @@ useEffect(()=>{
     <div className="contenedor">
       <div className="header-remitos">
         <h1>Lista de Remitos</h1>
+        {hasPermission("crear") && (
         <button onClick={() => navigate("/remitos/nuevo")} className="btn-agregar">
           Agregar Remito
         </button>
+        )}
       </div>
 
       <RemitosTable rows={remitos} onDelete={confirmarEliminar} />

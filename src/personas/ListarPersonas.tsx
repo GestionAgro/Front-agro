@@ -5,6 +5,7 @@ import Modal from "../componentes/Modal";
 import { useNavigate } from "react-router-dom";
 import type { Persona } from "../entidades/Persona";
 import PersonasTable from "./PersonasTable";
+import { useAuth } from "../componentes/AuthContex";
 
 const ListarEmpleados = () => {
   const [empleados, setEmpleados] = useState<Persona[]>([]);
@@ -12,6 +13,7 @@ const ListarEmpleados = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState<Persona | null>(null);
   const navigate = useNavigate();
+    const { hasPermission } = useAuth();
 
   useEffect(() => {
     const obtenerEmpleados = async () => {
@@ -46,13 +48,12 @@ const ListarEmpleados = () => {
         <h1>Lista de Empleados</h1>
       </div>
       {error && <p className="error">{error}</p>}
-     <button
-        onClick={() => navigate("/empleados/nuevo")}
-        className="btn-agregar"
-        style={{ padding: "10px 20px" }}
-      >
+
+      {hasPermission("crear") && (
+     <button onClick={() => navigate("/empleados/nuevo")} className="btn-agregar"style={{ padding: "10px 20px" }}>
         Agregar Empleado
       </button>
+      )}
 
        <PersonasTable rows={empleados} onDelete={confirmarEliminar} />
 

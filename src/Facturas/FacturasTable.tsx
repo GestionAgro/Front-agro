@@ -2,6 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../componentes/AuthContex";
 
 
 interface FacturasTableProps {
@@ -12,6 +13,8 @@ interface FacturasTableProps {
 
 export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTableProps) {
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
+
   const columns: GridColDef[] = [
     { field: "numero_factura", headerName: "Número", flex: 1 },
     { field: "tipo_factura", headerName: "Tipo", flex: 1 },
@@ -57,7 +60,7 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
         </Button>
 
 
-        {!asociado && (
+        {!asociado && hasPermission("asociar") && (
           <Button
             variant="contained"
             color="success"
@@ -68,6 +71,8 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
             Aso
           </Button>
         )}
+
+        {hasPermission("eliminar") && (
         <Button
           variant="contained"
           color="error"
@@ -77,6 +82,9 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
         >
           Borrar
         </Button>
+        )}
+
+        {hasPermission("editar") && (
         <Button
           variant="contained"
           color="warning"
@@ -86,6 +94,7 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
         >
           Edit
         </Button>
+        )}
       </div>
     );
   },

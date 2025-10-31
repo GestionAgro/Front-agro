@@ -2,6 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../componentes/AuthContex";
 
 interface RemitosTableProps {
   rows: any[];
@@ -10,6 +11,8 @@ interface RemitosTableProps {
 
 export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
+
 
   const columns: GridColDef[] = [
     { field: "numero_remito", headerName: "Número", flex: 1 },
@@ -53,6 +56,8 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
           >
             Ver
           </Button>
+
+          {hasPermission("editar") && (
            <Button
             variant="contained"
             color="warning"
@@ -62,8 +67,9 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
           >
             Edit
           </Button>
+          )}
 
-
+          {hasPermission("eliminar") && (
           <Button
             variant="contained"
             color="error"
@@ -73,6 +79,7 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
           >
             Eliminar
           </Button>
+          )}
         </div>
       ),
     },
