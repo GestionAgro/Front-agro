@@ -31,6 +31,9 @@ import { ProtectedRoute } from "./componentes/ProtectedRoute";
 import ListarUsuarios from "./Usuarios/ListarUsuarios";
 import ListarEventos from "./Eventos/ListarEventos";
 import VerEvento from "./Eventos/VerEvento";
+import ReporteRemitos from "./Remitos/ReporteRemitos";
+import TotalesFacturasPorMes from "./Facturas/TotalFacturasPorMes";
+import EditarRemito from "./Remitos/EditarRemito";
 
 
 
@@ -61,6 +64,7 @@ export default function App() {
         <Route path="/remitos" element={user ? <ListarRemitos /> : <Navigate to="/login" />} />
         <Route path="/remitos/nuevo" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}><AgregarRemito /></ProtectedRoute>} />
         <Route path="/remitos/:id" element={ <VerRemito />}> </Route>
+        <Route path="/remitos/:id/editar"element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}><EditarRemito /></ProtectedRoute>}/>
         <Route path="/auditorias-remito" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <ListarAuditoriasRemito />  </ProtectedRoute>} />
         <Route path="/auditorias-remito/:id" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <VerAuditoriaRemito /> </ProtectedRoute>} />
 
@@ -93,6 +97,9 @@ export default function App() {
          <Route path="/eventos" element={<ListarEventos />} />
          <Route path="/eventos/:id" element={<VerEvento />} />
 
+        {/*rutas de reporte*/}
+        <Route path="/reportes" element={user ? <ReporteRemitos /> : <Navigate to="/login" />} />
+        <Route path="/facturas/totales-por-mes" element={<TotalesFacturasPorMes />} />
 
       </Routes>
     </Router>

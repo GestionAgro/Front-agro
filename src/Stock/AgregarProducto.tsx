@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiServer";
 import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
-import { getAuth } from "firebase/auth";
 import { auth } from "../config/FirebaseConfig";
+import { addProducto } from "./ProductoService";
 
 const AgregarProducto = () => {
   const [form, setForm] = useState({
@@ -26,14 +26,8 @@ const AgregarProducto = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
-  try {if(!auth.currentUser){
-        alert ("Usuario no autenticado");
-        return;
-      }
-    const token = await auth.currentUser.getIdToken();
-    await apiClient.post("/producto", form,{
-      headers: {Authorization:  `Bearer ${token}`}
-    });
+  try {
+    await addProducto(form);
 
     setMensaje("Producto agregado con éxito");
     setModalOpen(true);
@@ -42,7 +36,8 @@ const AgregarProducto = () => {
       setModalOpen(false);
       navigate("/productos");
     }, 1500);
-  } catch (err: any) {
+  }
+   catch (err: any) {
     if (err.response && err.response.status === 400) {
       setMensaje(" El producto ya existe. Usá 'ajustar stock'");
     } else {

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import type { Persona } from "../entidades/Persona";
 import PersonasTable from "./PersonasTable";
 import { useAuth } from "../componentes/AuthContex";
+import { deletePersona, getAllPersonas } from "./PersonaService";
 
 const ListarEmpleados = () => {
   const [empleados, setEmpleados] = useState<Persona[]>([]);
@@ -18,8 +19,8 @@ const ListarEmpleados = () => {
   useEffect(() => {
     const obtenerEmpleados = async () => {
       try {
-        const response = await apiClient.get("/personas");
-        setEmpleados(response.data);
+        const data = await getAllPersonas();
+        setEmpleados(data);
       } catch (err) {
         setError("Error al obtener los empleados :(");
       }
@@ -34,9 +35,11 @@ const ListarEmpleados = () => {
 
   const eliminarEmpleado = async () => {
     try {
-      await apiClient.delete(`/personas/${empleadoSeleccionado?._id}`);
+      if (empleadoSeleccionado?._id) {
+      await deletePersona(empleadoSeleccionado._id);
       setEmpleados(empleados.filter((e) => e._id !== empleadoSeleccionado?._id));
       setModalOpen(false);
+      }
     } catch (err) {
       alert("Error al eliminar el empleado");
     }
@@ -49,11 +52,13 @@ const ListarEmpleados = () => {
       </div>
       {error && <p className="error">{error}</p>}
 
+      <div className="filtro-boton-container">
       {hasPermission("crear") && (
      <button onClick={() => navigate("/empleados/nuevo")} className="btn-agregar"style={{ padding: "10px 20px" }}>
         Agregar Empleado
       </button>
       )}
+      </div>
 
        <PersonasTable rows={empleados} onDelete={confirmarEliminar} />
 

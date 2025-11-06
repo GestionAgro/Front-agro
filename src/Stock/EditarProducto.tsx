@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import apiClient from "../api/apiServer";
 import type { Producto } from "../entidades/Producto";
 import FormularioEditarProducto from "./FormularioEditarProducto";
 import { auth } from "../config/FirebaseConfig";
+import { getProductoById, updateProducto } from "./ProductoService";
 
 const EditarProducto = () => {
   const { id } = useParams();
@@ -20,8 +20,8 @@ const EditarProducto = () => {
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        const res = await apiClient.get<Producto>(`/producto/${id}`);
-        setProducto(res.data);
+        const data = await getProductoById(id!);
+        setProducto(data);
       } catch (err) {
         console.error("Error cargando producto:", err);
       }
@@ -47,24 +47,10 @@ const EditarProducto = () => {
         setModalOpen(true);
         return;
       }
-
-      const token = await auth.currentUser.getIdToken();
-
-      await apiClient.put(
-        `/producto/${id}`,
-        {
-          nombre_producto: producto.nombre_producto,
-          cantidad_actual: producto.cantidad_actual,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      await updateProducto(id!, producto);
       navigate("/productos");
-    } catch (err) {
+    }
+     catch (err) {
       console.error("Error actualizando producto:", err);
       setMensaje("Error al actualizar el producto");
       setModalOpen(true);

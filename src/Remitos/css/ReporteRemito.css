@@ -1,0 +1,9 @@
+.chart-container {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+}

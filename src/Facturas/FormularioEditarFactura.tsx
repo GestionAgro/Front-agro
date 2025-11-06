@@ -37,6 +37,18 @@ const FormularioEditarFactura: React.FC<Props> = ({factura,onChange, onPersonaCh
       </div>
 
       <div className="mb-3">
+        <label className="form-label">Fecha</label>
+        <input
+          type="date"
+          name="fecha"
+          value={new Date(factura.fecha).toISOString().split("T")[0]}
+          onChange={onChange}
+          className="form-control"
+          disabled
+        />
+      </div>
+
+      <div className="mb-3">
         <label className="form-label">Tipo de Factura</label>
         <select
           name="tipo_factura"

@@ -6,21 +6,22 @@ import Modal from "../componentes/Modal";
 import RemitosTable from "./RemitosTable";
 import { auth } from "../config/FirebaseConfig";
 import { useAuth } from "../componentes/AuthContex";
+import { deleteRemito, getAllRemitos } from "./RemitoService";
 
 
  const ListarRemitos = () => {
-    const OBTENER_REMITOS = "/remitos";
     const navigate = useNavigate();
     const [remitos, setRemitos] = useState<any[]> ([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [remitoSeleccionado, setRemitoSeleccionado] = useState<any>(null);
     const { hasPermission } = useAuth();
 
-useEffect(()=>{
+
+    useEffect(()=>{
     const obtenerRemitos = async () => {
         try{
-            const response = await apiClient.get(OBTENER_REMITOS);
-            setRemitos(response.data);
+            const data = await getAllRemitos();
+            setRemitos(data);
         } catch (err:any){
             console.error("error al obteenr los remitos :(");
         }
@@ -36,15 +37,7 @@ useEffect(()=>{
 
   const eliminarRemito = async () => {
     try {
-      if(!auth.currentUser){
-        alert ("Usuario no autenticado");
-        return;
-      }
-      const token = await auth.currentUser.getIdToken();
-      await apiClient.delete(`/remitos/${remitoSeleccionado._id}`,{
-        headers: {Authorization: `Bearer ${token}`,}
-      });
-
+      await deleteRemito(remitoSeleccionado._id);
       setRemitos(remitos.filter((r) => r._id !== remitoSeleccionado._id));
       setModalOpen(false);
     } catch (err) {
@@ -57,9 +50,11 @@ useEffect(()=>{
       <div className="header-remitos">
         <h1>Lista de Remitos</h1>
         {hasPermission("crear") && (
+        <div className="filtro-boton-container">
         <button onClick={() => navigate("/remitos/nuevo")} className="btn-agregar">
           Agregar Remito
         </button>
+        </div>
         )}
       </div>
 

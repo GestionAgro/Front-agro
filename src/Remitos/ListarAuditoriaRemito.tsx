@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import AuditoriasRemitoTable from "./AuditoriaRemitoTable";
 import type { AuditoriaFactura as AuditoriaRemito } from "../entidades/AuditoriaFactura"; // reutilizamos el tipo
+import { getAllAuditoriasRemito } from "./RemitoService";
 
 const ListarAuditoriasRemito = () => {
   const [auditorias, setAuditorias] = useState<AuditoriaRemito[]>([]);
@@ -10,8 +10,8 @@ const ListarAuditoriasRemito = () => {
   useEffect(() => {
     const obtenerAuditorias = async () => {
       try {
-        const response = await apiClient.get("/auditoriaRemito");
-        setAuditorias(response.data);
+        const data = await getAllAuditoriasRemito();
+        setAuditorias(data);
       } catch (err) {
         setError("Error al obtener las auditorías de remitos");
       }

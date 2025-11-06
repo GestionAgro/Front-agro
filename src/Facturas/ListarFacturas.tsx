@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/apiServer";
 import "../Remitos/css/ListaRemitos.css"
-import { useFetcher, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Modal from "../componentes/Modal";
 import FacturasTable from "./FacturasTable";
 import { auth } from "../config/FirebaseConfig";
 import { useAuth } from "../componentes/AuthContex";
+import { deleteFactura, getAllFacturas } from "./FacturaService";
+import { getAllRemitos } from "../Remitos/RemitoService";
 
 
 const ListarFacturas = () => {
-  const OBTENER_FACTURAS = "/facturas";
   const navigate = useNavigate();
   const [facturas, setFacturas] = useState<any[]>([]);
   const [error, setError] = useState<string>("");
-  const [fechaFiltro, setFechaFiltro] = useState<string>("");
+
 
   const [modalOpen, setModalOpen] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -27,8 +28,8 @@ const ListarFacturas = () => {
   useEffect(() => {
     const obtenerFacturas = async () => {
       try {
-        const response = await apiClient.get(OBTENER_FACTURAS);
-        setFacturas(response.data);
+        const data = await getAllFacturas();
+        setFacturas(data);
       } catch (err: any) {
         setError("Error al obtener las facturas");
       }
@@ -39,8 +40,8 @@ const ListarFacturas = () => {
   useEffect(()=>{
     const obtenerRemitosEnEspera = async () =>{
       try{
-        const response = await apiClient.get("/remitos");
-        const filtrados= response.data.filter((r:any) => r.estado === "EN_ESPERA");
+        const data = await getAllRemitos();
+        const filtrados= data.filter((r:any) => r.estado === "EN_ESPERA");
         setRemitosDisponibles(filtrados);
       } catch (err) {
         console.error("error al obtener remitos", err);
@@ -49,14 +50,6 @@ const ListarFacturas = () => {
     obtenerRemitosEnEspera();
   }, [])
 
-  const facturasFiltradas = fechaFiltro
-    ? facturas.filter(
-        (f) =>
-          new Date(f.fecha).toLocaleDateString() ===
-          new Date(fechaFiltro).toLocaleDateString()
-      )
-    : facturas;
-
   const confirmarEliminar = (factura: any) => {
     setFacturaSeleccionada(factura);
     setModalOpen(true);
@@ -64,18 +57,7 @@ const ListarFacturas = () => {
 
   const eliminarFactura = async () => {
     try {
-      if (!auth.currentUser) {
-      setMensaje("Usuario no autenticado");
-      setModalOpen(true);
-      return;
-    }
-      const token = await auth.currentUser.getIdToken();
-
-      await apiClient.delete(`/facturas/${facturaSeleccionada._id}`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      });
+      await deleteFactura(facturaSeleccionada._id)
       setFacturas(facturas.filter((f) => f._id !== facturaSeleccionada._id));
       setModalOpen(false);
     } catch (err) {
@@ -133,11 +115,6 @@ const ListarFacturas = () => {
       {error && <p className="error">{error}</p>}
 
       <div className="filtro-boton-container">
-        <input
-          type="date"
-          value={fechaFiltro}
-          onChange={(e) => setFechaFiltro(e.target.value)}
-        />
         {hasPermission("crear") && (
         <button onClick={() => navigate("/facturas/nueva")}className="btn-agregar">
           Agregar Factura
@@ -146,7 +123,7 @@ const ListarFacturas = () => {
       </div>
 
       <FacturasTable
-        rows={facturasFiltradas}
+        rows={facturas}
         onDelete={confirmarEliminar}
         onAsociar={abrirModalAsociar}
       />

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiClient from "../api/apiServer";
 import EventosTable from "./EventosTable";
 import type { Evento } from "../entidades/Evento";
+import { getAllEventos } from "./EventoService";
 
 const ListarEventos = () => {
   const [eventos, setEventos] = useState<Evento[]>([]);
@@ -10,8 +11,8 @@ const ListarEventos = () => {
   useEffect(() => {
     const obtenerEventos = async () => {
       try {
-        const response = await apiClient.get("/eventos");
-        setEventos(response.data);
+        const data = await getAllEventos();
+        setEventos(data);
       } catch {
         setError("Error al obtener los eventos");
       }

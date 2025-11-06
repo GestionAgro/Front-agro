@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const permisos: Record<Rol, string[]> = {
-    ADMINISTRADOR: ["crear", "editar", "eliminar", "auditar", "ver", "reducir","administrar"],
+    ADMINISTRADOR: ["crear", "editar", "eliminar", "auditar", "ver", "reducir","administrar","asociar"],
     USUARIO: ["ver"],
   };
 

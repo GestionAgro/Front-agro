@@ -20,11 +20,15 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
     { field: "tipo_factura", headerName: "Tipo", flex: 1 },
     { field: "empresa", headerName: "Empresa", flex: 1 },
     { field: "importe", headerName: "Importe", flex: 1 },
+       { field: "fecha", headerName: "Fecha", flex: 1,
+      valueGetter: (value, row) =>
+        new Date(row.fecha).toLocaleDateString()
+    },
     {
       field: "estado",
       headerName: "Estado",
       flex: 1,
-      valueGetter: (value, row) => row.estado?.replace("_", " ") || "",
+      valueGetter: (value, row) => row.estado ? row.estado.toLowerCase().replace("_", " ") : "",
     },
     {
       field: "numero_remito",

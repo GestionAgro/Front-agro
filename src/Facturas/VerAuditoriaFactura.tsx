@@ -3,6 +3,7 @@ import apiClient from "../api/apiServer";
 import type { AuditoriaFactura } from "../entidades/AuditoriaFactura";
 import "./css/VerAuditori.css";
 import { useParams } from "react-router-dom";
+import { getAuditoriaFacturaById } from "./FacturaService";
 
 interface ObjectViewerProps {
   data: any;
@@ -53,8 +54,8 @@ const VerAuditoriaFactura = () => {
 
   const obtenerAuditoria = async () => {
     try {
-      const response = await apiClient.get(`/auditoriaFactura/${id}`);
-      setAuditoria(response.data);
+      const data = await getAuditoriaFacturaById(id!);
+      setAuditoria(data);
     } catch (err) {
       setError("Error al obtener la auditoría");
     }

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import type { Rol, Usuario } from "../entidades/Usuario";
 import UsuariosTable from "./UsuarioTable";
 import "../Remitos/css/ListaRemitos.css";
-import { auth } from "../config/FirebaseConfig";
+import { changeUserRole, getAllUsuarios } from "./UsuarioService";
 
 const ListarUsuarios = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -12,8 +11,8 @@ const ListarUsuarios = () => {
   useEffect(() => {
     const obtenerUsuarios = async () => {
       try {
-        const res = await apiClient.get("/usuarios");
-        setUsuarios(res.data);
+        const data = await getAllUsuarios();
+        setUsuarios(data);
       } catch (err) {
         setError("Error al obtener los usuarios");
       }
@@ -23,15 +22,7 @@ const ListarUsuarios = () => {
 
   const cambiarRol = async (id: string, nuevoRol: Rol) => {
   try {
-    const token = await auth.currentUser?.getIdToken();
-
-    await apiClient.put(`/usuarios/rol/${id}`,{ rol: nuevoRol },{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
+    await changeUserRole(id,nuevoRol);
     setUsuarios((prev) =>
       prev.map((u) => (u._id === id ? { ...u, rol: nuevoRol } : u))
     );

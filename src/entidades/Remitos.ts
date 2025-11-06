@@ -4,7 +4,7 @@ import type { Producto } from "./Producto";
 export type EstadoRemito = "EN_ESPERA" | "FACTURADO";
 
 export type ProductoDetalleRemito = {
-  id_producto: string | Producto;
+  id_producto?: string | Producto;
   nombre_producto: string;
   cantidad: number;
 };

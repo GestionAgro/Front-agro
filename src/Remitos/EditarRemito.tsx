@@ -4,6 +4,7 @@ import apiClient from "../api/apiServer";
 import type { Remito } from "../entidades/Remitos";
 import FormularioEditarRemito from "./FormularioEditarRemito";
 import { auth } from "../config/FirebaseConfig";
+import { getRemitoById, updateRemito } from "./RemitoService";
 
 const EditarRemito = () => {
   const { id } = useParams();
@@ -24,8 +25,8 @@ const EditarRemito = () => {
   useEffect(() => {
     const fetchRemito = async () => {
       try {
-        const res = await apiClient.get<Remito>(`/remitos/${id}`);
-        setRemito(res.data);
+        const data = await getRemitoById(id!);
+        setRemito(data);
       } catch (err) {
         console.error("Error al cargar remito:", err);
       }
@@ -51,21 +52,7 @@ const EditarRemito = () => {
         setModalOpen(true);
         return;
       }
-
-      const token = await auth.currentUser.getIdToken();
-
-      await apiClient.put(
-        `/remitos/${id}`,
-        {
-          fecha: remito.fecha,
-          empresa: remito.empresa,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await updateRemito(id!, {fecha: remito.fecha,empresa: remito.empresa,});
 
       navigate("/remitos");
     } catch (err) {

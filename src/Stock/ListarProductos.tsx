@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import "../Remitos/css/ListaRemitos.css";
 import Modal from "../componentes/Modal";
 import { useNavigate } from "react-router-dom";
 import type { Producto } from "../entidades/Producto";
 import ProductosTable from "./ProductosTable";
-import { auth } from "../config/FirebaseConfig";
 import { useAuth } from "../componentes/AuthContex";
 import type { Persona } from "../entidades/Persona";
+import { ajustarStockProducto, deleteProducto, getAllProductos } from "./ProductoService";
+import { getAllPersonas } from "../personas/PersonaService";
 
 const ListarProductos = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
@@ -25,8 +25,8 @@ const ListarProductos = () => {
   useEffect(() => {
     const obtenerProductos = async () => {
       try {
-        const response = await apiClient.get("/producto");
-        setProductos(response.data);
+        const data = await getAllProductos();
+        setProductos( data);
       } catch (err) {
         setError("Error al obtener los productos :(");
       }
@@ -37,8 +37,8 @@ const ListarProductos = () => {
   useEffect(() => {
   const obtenerPersonas = async () => {
     try {
-      const response = await apiClient.get("/personas");
-      setPersonas(response.data);
+      const data = await getAllPersonas();
+      setPersonas(data);
     } catch (err) {
       console.error("Error al obtener personas");
     }
@@ -61,16 +61,11 @@ const ListarProductos = () => {
 
   const eliminarProducto = async () => {
     try {
-      if(!auth.currentUser){
-              alert ("Usuario no autenticado");
-              return;
-            }
-      const token = await auth.currentUser.getIdToken();
-      await apiClient.delete(`/producto/${productoSeleccionado?._id}`,{
-        headers: {Authorization: `Bearer ${token}`,}
-      });
+      if(productoSeleccionado?._id){
+      await deleteProducto(productoSeleccionado?._id);
       setProductos(productos.filter((p) => p._id !== productoSeleccionado?._id));
       setModalEliminarOpen(false);
+      }
     } catch (err) {
       alert("Error al eliminar el producto");
     }
@@ -78,25 +73,14 @@ const ListarProductos = () => {
 
 
  const ajustarStock = async () => {
-    if (!productoSeleccionado) return;
-    if (!personaSeleccionada) {
+    if (!productoSeleccionado || !personaSeleccionada) {
     alert("Seleccioná quién retira el producto");
     return;
   }
     try {
-      if(!auth.currentUser){
-              alert ("Usuario no autenticado");
-              return;
-            }
-      const token = await auth.currentUser.getIdToken();
-      const response = await apiClient.patch(`/producto/${productoSeleccionado._id}/ajustar`, {
-        cantidad: -cantidadStock,
-        id_persona_retiro: personaSeleccionada,
-      },{
-        headers: { Authorization: `Bearer ${token}`}
-      });
+      const actualizado = await ajustarStockProducto(productoSeleccionado._id!,cantidadStock,personaSeleccionada);
       setProductos(
-        productos.map((p) => (p._id === productoSeleccionado._id ? response.data : p))
+        productos.map((p) => (p._id === productoSeleccionado._id ? actualizado : p))
       );
       setModalStockOpen(false);
 
@@ -111,10 +95,12 @@ const ListarProductos = () => {
         <h1>Lista de Productos</h1>
       </div>
       {error && <p className="error">{error}</p>}
+      <div className="filtro-boton-container">
       {hasPermission("crear") && (
       <button onClick={() => navigate("/productos/nuevo")}className="btn-agregar"> Agregar Producto
       </button>
       )}
+      </div>
 
      <ProductosTable rows={productos} onDelete={confirmarEliminar} onAjustarStock={abrirModalStock} />
 

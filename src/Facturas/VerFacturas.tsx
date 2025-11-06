@@ -37,7 +37,8 @@ const VerFactura = () => {
   <p><strong>Tipo:</strong> <span>{factura.tipo_factura}</span></p>
   <p><strong>Empresa:</strong> <span>{factura.empresa}</span></p>
   <p><strong>Importe:</strong> <span>${factura.importe}</span></p>
-  <p><strong>Estado:</strong> <span>{factura.estado}</span></p>
+  <p><strong>Estado:</strong> <span>{factura.estado ? factura.estado.toLowerCase().replace("_", " ") : ""}</span></p>
+  <p><strong>Fecha:</strong> <span>{new Date(factura.fecha).toLocaleDateString()}</span></p>
   <p><strong>Numero de remito asociado:</strong> <span>{factura.numero_remito}</span></p>
   {typeof factura.recibido_por === "string" ? (
     <p>

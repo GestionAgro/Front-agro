@@ -3,6 +3,7 @@ import apiClient from "../api/apiServer";
 import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
+import { getAuditoriaRemitoById } from "./RemitoService";
 
 const ObjectViewer = ({ data }: { data: any }) => {
   if (data === null || data === undefined)
@@ -65,8 +66,8 @@ const VerAuditoriaRemito = () => {
 
   const obtenerAuditoria = async () => {
     try {
-      const response = await apiClient.get(`/auditoriaRemito/${id}`);
-      setAuditoria(response.data);
+      const data = await getAuditoriaRemitoById(id!);
+      setAuditoria(data);
     } catch {
       setError("Error al obtener la auditoría");
     }

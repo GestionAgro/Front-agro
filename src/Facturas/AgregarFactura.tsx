@@ -5,11 +5,13 @@ import "../Remitos/css/AgregarRemitos.css"
 import Modal from "../componentes/Modal";
 import type { Persona } from "../entidades/Persona";
 import { auth } from "../config/FirebaseConfig";
+import { getAllPersonas } from "../personas/PersonaService";
 
 const AgregarFactura = () => {
   const [form, setForm] = useState({
     numero_factura: "",
     tipo_factura: "A",
+    fecha: "",
     empresa: "",
     importe: "",
     recibido_por: "",
@@ -24,8 +26,8 @@ const AgregarFactura = () => {
   useEffect(() => {
   const fetchPersonas = async () => {
     try {
-      const response = await apiClient.get("/personas");
-      setPersonas(response.data);
+      const data = await getAllPersonas();
+      setPersonas(data);
     } catch (err) {
       console.error("Error al traer personas", err);
     }
@@ -48,10 +50,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       return;
     }
 
-    //agarro el token de usuario atenticado
     const token = await auth.currentUser.getIdToken();
 
-    // aca mando la factura con el header del usario
     await apiClient.post("/facturas", form, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -104,6 +104,13 @@ const handleSubmit = async (e: React.FormEvent) => {
           name="importe"
           placeholder="Importe"
           value={form.importe}
+          onChange={handleChange}
+          required
+        />
+         <input
+          type="date"
+          name="fecha"
+          value={form.fecha}
           onChange={handleChange}
           required
         />

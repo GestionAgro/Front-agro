@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import AuditoriasStockTable from "./AuditoriaStockTable";
 import type { AuditoriaStock } from "../entidades/AuditoriaStock";
+import { getAllAuditoriasStock } from "./ProductoService";
 
 const ListarAuditoriasStock = () => {
   const [auditorias, setAuditorias] = useState<AuditoriaStock[]>([]);
@@ -10,8 +10,8 @@ const ListarAuditoriasStock = () => {
   useEffect(() => {
     const obtenerAuditorias = async () => {
       try {
-        const response = await apiClient.get("/auditoriaStock");
-        setAuditorias(response.data);
+        const data = await getAllAuditoriasStock();
+        setAuditorias(data);
       } catch (err) {
         setError("Error al obtener las auditorías de stock");
       }

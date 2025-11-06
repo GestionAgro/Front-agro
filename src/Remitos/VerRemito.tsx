@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import type { Remito } from "../entidades/Remitos";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
+import { getRemitoById } from "./RemitoService";
 
 const VerRemito = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,8 +11,8 @@ const VerRemito = () => {
 
   const obtenerRemito = async () => {
     try {
-      const response = await apiClient.get<Remito>(`/remitos/${id}`);
-      setRemito(response.data);
+      const data = await getRemitoById(id!);
+      setRemito(data);
     } catch (err) {
       setError("Error al obtener el remito");
     }
@@ -40,7 +40,7 @@ const VerRemito = () => {
         ))}
       </ul>
       </div>
-      <p><strong>Estado:</strong> <span>{remito.estado?.replace("_", " ")}</span></p>
+      <p><strong>Estado:</strong> <span>{remito.estado ? remito.estado.toLocaleLowerCase().replace("_", " ") : ""}</span></p>
       <p><strong>Recibido por: </strong>
       <span>{typeof remito.recibido_por === "string"
       ? remito.recibido_por

@@ -7,6 +7,7 @@ import { useAuth } from "./AuthContex";
 
 export default function Navbar() {
   const [show, setShow] = useState(false);
+  const [reportesShow, setReportesShow] = useState(false);
   const { hasPermission } = useAuth();
 
   return (
@@ -16,9 +17,12 @@ export default function Navbar() {
           🐄
         </Link>
         <button
-          className="navbar-toggler me-auto" type="button" aria-controls="offcanvasNavbar" onClick={() => setShow(true)}><span className="navbar-toggler-icon"></span>
+          className="navbar-toggler me-auto"
+          type="button"
+          aria-controls="offcanvasNavbar"
+          onClick={() => setShow(true)}>
+          <span className="navbar-toggler-icon"></span>
         </button>
-
 
         <div
           className={`offcanvas offcanvas-start offcanvas-custom ${show ? "show" : ""}`}
@@ -65,28 +69,105 @@ export default function Navbar() {
                 <Link className="nav-link" to="/empleados" onClick={() => setShow(false)}>Empleados</Link>
               </li>
 
-              <li className="nav-item">
-               {hasPermission("auditar") && <Link className="nav-link"to="/auditorias-factura"onClick={() => setShow(false)}>Auditorías facturas</Link>}
+              {/* Dropdown de Auditorías */}
+              <li className="nav-item dropdown">
+                {hasPermission("auditar") && (
+                  <>
+                    <a
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      id="auditoriaDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Auditorías
+                    </a>
+                    <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="auditoriaDropdown">
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/auditorias-factura"
+                          onClick={() => setShow(false)}
+                        >
+                          Facturas
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/auditorias-remito"
+                          onClick={() => setShow(false)}
+                        >
+                          Remitos
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/auditorias-stock"
+                          onClick={() => setShow(false)}
+                        >
+                          Stock
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/eventos"
+                          onClick={() => setShow(false)}
+                        >
+                          Eventos
+                        </Link>
+                      </li>
+                    </ul>
+                  </>
+                )}
+              </li>
+
+              {/* Dropdown de Reportes */}
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="reportesDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  onClick={() => setReportesShow(!reportesShow)}
+                >
+                  Reportes
+                </a>
+                <ul className={`dropdown-menu ${reportesShow ? "show" : ""} dropdown-menu-dark`} aria-labelledby="reportesDropdown">
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/reportes"
+                      onClick={() => setShow(false)}
+                    >
+                      Total de remitos por mes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/facturas/totales-por-mes"
+                      onClick={() => setShow(false)}
+                    >
+                      Total de importes por mes
+                    </Link>
+                  </li>
+                </ul>
               </li>
 
               <li className="nav-item">
-              {hasPermission("auditar") && <Link className="nav-link"to="/auditorias-remito"onClick={() => setShow(false)}> Auditorías de Remitos</Link>}
+                {hasPermission("auditar") && (
+                  <Link className="nav-link" to="/usuarios" onClick={() => setShow(false)}>Gestion de roles</Link>
+                )}
               </li>
-
-              <li className="nav-item">
-               {hasPermission("auditar") && <Link className="nav-link"to="/auditorias-stock"onClick={() => setShow(false)}>Auditorías de Stock</Link>}
-              </li>
-              <li className="nav-item">
-                {hasPermission("administrar") && <Link className="nav-link" to="/usuarios"onClick={() => setShow(false)}>Gestión de Usuarios </Link>}
-                </li>
-
-                <li className="nav-item">
-                 {hasPermission("auditar") && (<Link className="nav-link" to="/eventos"onClick={() => setShow(false)}>Eventos</Link>)}
-                 </li>
             </ul>
           </div>
         </div>
-
 
         {auth.currentUser && (
           <div className="d-flex align-items-center ms-auto">

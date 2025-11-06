@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiClient from "../api/apiServer";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
+import { getEventoById } from "./EventoService";
 
 interface ObjectViewerProps {
   data: any;
@@ -64,8 +65,10 @@ const VerEvento = () => {
 
   const obtenerEvento = async () => {
     try {
-      const response = await apiClient.get(`/eventos/${id}`);
-      setEvento(response.data);
+       if (id) {
+        const data = await getEventoById(id);
+        setEvento(data);
+      }
     } catch (err) {
       setError("Error al obtener el evento");
     }
@@ -101,7 +104,7 @@ const VerEvento = () => {
         <strong>Descripción:</strong> <span>{evento.descripcion}</span>
       </p>
       <p>
-  <strong>Persona involucrada:</strong> <span>{evento.nombre}</span>
+  <strong>Persona que realizo el retiro:</strong> <span>{evento.nombre}</span>
 </p>
 
 

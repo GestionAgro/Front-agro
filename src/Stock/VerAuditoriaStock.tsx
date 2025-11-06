@@ -3,6 +3,7 @@ import apiClient from "../api/apiServer";
 import type { AuditoriaStock } from "../entidades/AuditoriaStock";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
+import { getAuditoriaStockById } from "./ProductoService";
 
 const ObjectViewer = ({ data }: { data: any }) => {
   if (data === null || data === undefined) return <span className="valor-vacio">-</span>;
@@ -63,8 +64,9 @@ const VerAuditoriaStock = () => {
 
   const obtenerAuditoria = async () => {
     try {
-      const response = await apiClient.get(`/auditoriaStock/${id}`);
-      setAuditoria(response.data);
+      if(!id) return;
+      const data = await getAuditoriaStockById(id);
+      setAuditoria(data);
     } catch {
       setError("Error al obtener la auditoría");
     }

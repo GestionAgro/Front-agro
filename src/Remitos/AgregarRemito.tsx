@@ -5,6 +5,7 @@ import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
 import type { Persona } from "../entidades/Persona";
 import { auth } from "../config/FirebaseConfig";
+import { getAllPersonas } from "../personas/PersonaService";
 
 const AgregarRemito = () => {
   const [form, setForm] = useState({
@@ -29,8 +30,8 @@ const AgregarRemito = () => {
 
   useEffect(() => {
     const fetchPersonas = async () => {
-      const res = await apiClient.get("/personas");
-      setPersonas(res.data);
+      const data = await getAllPersonas();
+      setPersonas(data);
     };
     fetchPersonas();
   }, []);
@@ -73,6 +74,7 @@ const AgregarRemito = () => {
       await apiClient.post("/remitos", form,{
         headers:{Authorization: `Bearer ${token}`},
       });
+
       setMensaje("Remito agregado con éxito");
       setModalOpen(true);
 

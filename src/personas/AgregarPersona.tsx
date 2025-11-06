@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../api/apiServer";
 import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
+import { createPersona } from "./PersonaService";
+import type { Persona } from "../entidades/Persona";
 
 const AgregarEmpleado = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<Persona>({
     nombre: "",
     tipo_persona: "EMPLEADO",
   });
@@ -21,7 +22,7 @@ const AgregarEmpleado = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await apiClient.post("/personas", form);
+      await createPersona(form);
       setMensaje("Empleado agregado con éxito");
       setModalOpen(true);
 
