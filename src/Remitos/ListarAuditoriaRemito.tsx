@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AuditoriasRemitoTable from "./AuditoriaRemitoTable";
-import type { AuditoriaFactura as AuditoriaRemito } from "../entidades/AuditoriaFactura"; // reutilizamos el tipo
+import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
 import { getAllAuditoriasRemito } from "./RemitoService";
 
 const ListarAuditoriasRemito = () => {
