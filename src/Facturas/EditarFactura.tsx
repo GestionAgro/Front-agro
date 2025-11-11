@@ -70,7 +70,6 @@ const EditarFactura = () => {
 
   return (
     <div className="contenedor-formulario">
-      <h2>Editar Factura</h2>
       <FormularioEditarFactura
         factura={factura}
         onChange={handleChange}

@@ -44,7 +44,7 @@ export default function PersonasTable({ rows, onDelete }: PersonasTableProps) {
             sx={{ fontSize: "0.7rem", padding: "2px 4px" }}
             onClick={() => onDelete && onDelete(params.row)}
           >
-            Eliminar
+            Borrar
           </Button>
         </div>
   )
@@ -52,12 +52,12 @@ export default function PersonasTable({ rows, onDelete }: PersonasTableProps) {
 }
 
   return (
-    <Paper sx={{ height: 500, width: "100%" }}>
+    <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         getRowId={(row) => row._id}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10, 100]}
         checkboxSelection
         sx={{ border: 0 }}
       />

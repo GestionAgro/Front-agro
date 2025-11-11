@@ -17,6 +17,7 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock}: Produc
   const columns: GridColDef[] = [
     { field: "nombre_producto", headerName: "Nombre", flex: 1 },
     { field: "cantidad_actual", headerName: "Cantidad Actual", flex: 1 },
+    { field: "unidad", headerName: "Unidad", flex: 1},
   ];
 
     if ( hasPermission("editar") || hasPermission("eliminar") || hasPermission("reducir")) {
@@ -34,7 +35,7 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock}: Produc
             sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => onAjustarStock && onAjustarStock(params.row)}
           >
-            reducir
+            quitar
           </Button>
           <Button
             variant="contained"
@@ -53,7 +54,7 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock}: Produc
             sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => onDelete && onDelete(params.row)}
           >
-            Eliminar
+            Borrar
           </Button>
         </div>
       )
@@ -62,12 +63,12 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock}: Produc
 
 
   return (
-    <Paper sx={{ height: 500, width: "100%" }}>
+    <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         getRowId={(row) => row._id}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10,100]}
         checkboxSelection
         sx={{ border: 0 }}
       />

@@ -27,9 +27,7 @@ const VerFactura = () => {
     return <p className="error">{error}</p>;
   }
 
-  if (!factura) {
-    return <p>Cargando factura...</p>;
-  }
+  if (!factura) return null;
 
   return (
     <div className="ver-factura">

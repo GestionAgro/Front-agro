@@ -1,0 +1,17 @@
+
+.cargando-centro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.cargando-centro h2 {
+  color: #2ecc71;
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  animation: parpadeo 1.2s infinite;
+}
+

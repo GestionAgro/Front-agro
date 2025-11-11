@@ -11,6 +11,7 @@ interface Props {
 const FormularioEditarProducto: React.FC<Props> = ({ producto, onChange, onSubmit }) => {
   return (
     <form onSubmit={onSubmit} className="form-factura">
+      <h2>Editar Producto</h2>
       <div className="mb-3">
         <label className="form-label">Nombre del Producto</label>
         <input

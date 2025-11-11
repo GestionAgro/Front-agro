@@ -44,7 +44,7 @@ export default function EventosTable({ rows }: EventosTableProps) {
   ];
 
   return (
-    <Paper sx={{ height: 500, width: "100%" }}>
+    <Paper sx={{ height: 450, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}

@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../api/apiServer";
 import "../Remitos/css/AgregarRemitos.css";
 import Modal from "../componentes/Modal";
-import { auth } from "../config/FirebaseConfig";
 import { addProducto } from "./ProductoService";
 
 const AgregarProducto = () => {
   const [form, setForm] = useState({
     nombre_producto: "",
     cantidad_actual: 0,
+    unidad: "",
   });
 
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm({
       ...form,
@@ -69,6 +68,18 @@ const AgregarProducto = () => {
           min="0"
           required
         />
+        <select
+          name="unidad"
+          value={form.unidad}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Selecciona unidad</option>
+          <option value="kg">kg</option>
+          <option value="L">L</option>
+          <option value="ml">ml</option>
+          <option value="unidades">unidades</option>
+        </select>
 
         <button type="submit" className="btn-agregar">Guardar</button>
       </form>

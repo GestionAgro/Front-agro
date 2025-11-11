@@ -12,8 +12,8 @@
 
 /* Título */
 .form-remito h2 {
-  text-align: center;
-  margin-bottom: 20px;
+ text-align: center !important;
+  margin-bottom: 15px;
   color: #2c5046;
 }
 

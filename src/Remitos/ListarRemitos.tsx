@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import "./css/ListaRemitos.css";
 import { useNavigate } from "react-router-dom";
 import Modal from "../componentes/Modal";
 import RemitosTable from "./RemitosTable";
-import { auth } from "../config/FirebaseConfig";
 import { useAuth } from "../componentes/AuthContex";
 import { deleteRemito, getAllRemitos } from "./RemitoService";
 

@@ -24,9 +24,16 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
     { field: "productos", headerName: "Detalle", flex: 1 ,
      valueGetter: (value, row) =>
     row.productos
-      ?.map((p: any) => `${p.nombre_producto} (${p.cantidad})`)
+      ?.map((p: any) => `${p.nombre_producto}: ${p.cantidad}`)
       .join(", ") || "Sin productos"
 },
+    {field: "unidades",headerName: "Unidades", flex: 1,
+    valueGetter: (value, row) =>
+  row.productos
+    ?.map((p: any) => p.unidad)
+   .join(", ") || "-"
+},
+
     {
       field: "recibido_por",
       headerName: "Recibido por",
@@ -77,7 +84,7 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
             sx={{ minWidth: 50, padding: "2px 2px", fontSize: "0.7rem" }}
             onClick={() => onDelete && onDelete(params.row)}
           >
-            Eliminar
+            Borrar
           </Button>
           )}
         </div>
@@ -91,7 +98,7 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
         rows={rows}
         columns={columns}
         getRowId={(row) => row._id}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10,100]}
         checkboxSelection
         sx={{ border: 0 }}
       />

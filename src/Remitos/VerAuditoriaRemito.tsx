@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
 import { getAuditoriaRemitoById } from "./RemitoService";
+
+
+const formatKey = (key: string) => {
+  return key
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, c => c.toUpperCase());
+};
 
 const ObjectViewer = ({ data }: { data: any }) => {
   if (data === null || data === undefined)
@@ -30,7 +36,7 @@ const ObjectViewer = ({ data }: { data: any }) => {
     <ul>
       {Object.entries(data).map(([key, value]) => (
         <li key={key}>
-          <strong>{key}:</strong>{" "}
+          <strong>{formatKey(key)}:</strong>
           {typeof value === "object" && value !== null ? (
             <ObjectViewer data={value} />
           ) : (
@@ -78,7 +84,7 @@ const VerAuditoriaRemito = () => {
   }, [id]);
 
   if (error) return <p className="error">{error}</p>;
-  if (!auditoria) return <p>Cargando auditoría...</p>;
+  if (!auditoria) return null;
 
   return (
     <div className="ver-factura">

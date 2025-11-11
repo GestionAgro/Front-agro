@@ -59,7 +59,6 @@ const EditarProducto = () => {
 
   return (
     <div className="contenedor-formulario">
-      <h2>Editar Producto</h2>
       <FormularioEditarProducto
         producto={producto}
         onChange={handleChange}

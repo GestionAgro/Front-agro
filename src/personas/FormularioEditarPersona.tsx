@@ -10,6 +10,7 @@ interface Props {
 const FormularioEditarPersona: React.FC<Props> = ({ persona, onChange, onSubmit }) => {
   return (
     <form onSubmit={onSubmit} className="form-factura">
+      <h2>Editar Empleado</h2>
       <div className="mb-3">
         <label className="form-label">Nombre</label>
         <input

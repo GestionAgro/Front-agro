@@ -76,6 +76,18 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
           </Button>
         )}
 
+           {hasPermission("editar") && (
+        <Button
+          variant="contained"
+          color="warning"
+          size="small"
+          sx={{ minWidth: 50, padding: "2px 4px", fontSize: "0.7rem" }}
+          onClick={() => navigate(`/facturas/${params.row._id}/editar`)}
+        >
+          Edit
+        </Button>
+        )}
+
         {hasPermission("eliminar") && (
         <Button
           variant="contained"
@@ -87,30 +99,18 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
           Borrar
         </Button>
         )}
-
-        {hasPermission("editar") && (
-        <Button
-          variant="contained"
-          color="warning"
-          size="small"
-          sx={{ minWidth: 50, padding: "2px 4px", fontSize: "0.7rem" }}
-          onClick={() => navigate(`/facturas/${params.row._id}/editar`)}
-        >
-          Edit
-        </Button>
-        )}
       </div>
     );
   },
  },
  ]
   return (
-    <Paper sx={{ height: 500, width: "100%" }}>
+    <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         getRowId={(row) => row._id}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10, 100]}
         checkboxSelection
         sx={{ border: 0 }}
       />

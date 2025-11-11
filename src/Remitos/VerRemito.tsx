@@ -23,7 +23,7 @@ const VerRemito = () => {
   }, [id]);
 
   if (error) return <p className="error">{error}</p>;
-  if (!remito) return <p>Cargando remito...</p>;
+  if (!remito) return null;
 
   return (
     <div className="ver-factura">
@@ -35,7 +35,7 @@ const VerRemito = () => {
       <ul className="productos-lista">
         {remito.productos?.map((p, index) =>(
           <li key={index} className="producto-item">
-           {p.nombre_producto}-{ p.cantidad}
+           {p.nombre_producto}  { p.cantidad}  {p.unidad}
           </li>
         ))}
       </ul>

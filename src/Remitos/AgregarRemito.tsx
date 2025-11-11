@@ -12,7 +12,7 @@ const AgregarRemito = () => {
     numero_remito: "",
     fecha: "",
     empresa: "",
-    productos: [] as { nombre_producto: string; cantidad: number }[],
+    productos: [] as { nombre_producto: string; cantidad: number; unidad: string }[],
     recibido_por: "",
     estado: "EN_ESPERA",
   });
@@ -20,6 +20,7 @@ const AgregarRemito = () => {
   const [nuevoProducto, setNuevoProducto] = useState({
     nombre_producto: "",
     cantidad: 0,
+    unidad: "",
   });
 
   const navigate = useNavigate();
@@ -41,12 +42,13 @@ const AgregarRemito = () => {
   };
 
 
-  const handleProductoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNuevoProducto({ ...nuevoProducto, [e.target.name]: e.target.value });
-  };
+ const handleProductoChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {const { name, value } = e.target;
+  setNuevoProducto({...nuevoProducto,[name]: value,});
+};
 
   const agregarProducto = () => {
-    if (!nuevoProducto.nombre_producto || nuevoProducto.cantidad <= 0) return;
+    if (!nuevoProducto.nombre_producto || nuevoProducto.cantidad <= 0 || !nuevoProducto.unidad) return;
     setForm({
       ...form,
       productos: [...form.productos,
@@ -54,7 +56,7 @@ const AgregarRemito = () => {
           cantidad: Number(nuevoProducto.cantidad)
     }],
     });
-    setNuevoProducto({ nombre_producto: "", cantidad: 0 });
+    setNuevoProducto({ nombre_producto: "", cantidad: 0, unidad: ""});
   };
 
   const eliminarProducto = (index: number) => {
@@ -135,6 +137,19 @@ const AgregarRemito = () => {
               value={nuevoProducto.cantidad}
               onChange={handleProductoChange}
             />
+            <select
+            name="unidad"
+            value={nuevoProducto.unidad}
+            onChange={handleProductoChange}
+            >
+              <option value="">Unidad</option>
+              <option value="kg">kg</option>
+              <option value="L">L</option>
+              <option value="ml">ml</option>
+              <option value="unidades">unidades</option>
+
+            </select>
+
             <button type="button" onClick={agregarProducto}>
               Agregar producto
             </button>
@@ -143,7 +158,7 @@ const AgregarRemito = () => {
           <ul>
             {form.productos.map((p, index) => (
               <li key={index}>
-                {p.nombre_producto} — {p.cantidad} unidades{" "}
+                {p.nombre_producto} — {p.cantidad} {p.unidad}{" "}
                 <button type="button" onClick={() => eliminarProducto(index)}>
                   Eliminar
                 </button>

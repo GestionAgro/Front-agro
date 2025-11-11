@@ -53,8 +53,6 @@ const EditarPersona = () => {
 
   return (
     <div className="contenedor-formulario">
-      <h2>Editar Empleado</h2>
-
       <FormularioEditarPersona
         persona={persona}
         onChange={handleChange}

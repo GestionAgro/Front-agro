@@ -64,7 +64,6 @@ const EditarRemito = () => {
 
   return (
     <div className="contenedor-formulario">
-      <h2>Editar Remito</h2>
       <FormularioEditarRemito remito={remito} onChange={handleChange} onSubmit={handleSubmit} />
     </div>
   );

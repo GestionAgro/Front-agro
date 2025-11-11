@@ -5,6 +5,13 @@ import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
 import { getAuditoriaStockById } from "./ProductoService";
 
+const formatKey = (key: string) => {
+  return key
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, c => c.toUpperCase());
+};
+
+
 const ObjectViewer = ({ data }: { data: any }) => {
   if (data === null || data === undefined) return <span className="valor-vacio">-</span>;
   if (typeof data !== "object"){
@@ -28,7 +35,7 @@ const ObjectViewer = ({ data }: { data: any }) => {
     <ul>
       {Object.entries(data).map(([key, value]) => (
         <li key={key}>
-          <strong>{key}:</strong>{" "}
+          <strong>{formatKey(key)}:</strong>
           {typeof value === "object" && value !== null ? (
             <ObjectViewer data={value} />
           ) : (
@@ -77,7 +84,7 @@ const VerAuditoriaStock = () => {
   }, [id]);
 
   if (error) return <p className="error">{error}</p>;
-  if (!auditoria) return <p>Cargando auditoría...</p>;
+  if (!auditoria) return null;
 
   return (
     <div className="ver-factura">

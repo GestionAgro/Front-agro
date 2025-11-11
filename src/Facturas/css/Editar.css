@@ -7,13 +7,15 @@
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
+
 }
 
 
 /* titulo del formulario */
 .form-factura h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: center !important;
+  margin-top: 0;
+  margin-bottom: 15px;
   color: #2c5046;
 }
 
@@ -22,8 +24,8 @@
 .form-factura select,
 .form-factura textarea {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0 18px 0;
+  padding: 8px;
+  margin: 8px 0 12px 0;
   border: 1px solid #b7d7c2;
   border-radius: 8px;
   font-size: 15px;
@@ -51,12 +53,12 @@
 .form-factura button {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   background-color: #177a44;
   color: #fff;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;

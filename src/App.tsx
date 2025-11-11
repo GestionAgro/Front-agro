@@ -34,23 +34,19 @@ import VerEvento from "./Eventos/VerEvento";
 import ReporteRemitos from "./Remitos/ReporteRemitos";
 import TotalesFacturasPorMes from "./Facturas/TotalFacturasPorMes";
 import EditarRemito from "./Remitos/EditarRemito";
+import { useAuth } from "./componentes/AuthContex";
 
 
 
 export default function App() {
+  const { user, loading } = useAuth();
 
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  if (loading) return <p>Cargando...</p>;
+  if (loading)
+    return (
+      <div className="cargando-centro">
+        <h2>Cargando...</h2>
+      </div>
+    );
 
   return (
     <Router>

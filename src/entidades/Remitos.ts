@@ -7,6 +7,7 @@ export type ProductoDetalleRemito = {
   id_producto?: string | Producto;
   nombre_producto: string;
   cantidad: number;
+  unidad?: string;
 };
 
 

@@ -104,7 +104,7 @@ const VerEvento = () => {
         <strong>Descripción:</strong> <span>{evento.descripcion}</span>
       </p>
       <p>
-  <strong>Persona que realizo el retiro:</strong> <span>{evento.nombre}</span>
+  <strong>Persona que realizo la accion:</strong> <span>{evento.nombre}</span>
 </p>
 
 
