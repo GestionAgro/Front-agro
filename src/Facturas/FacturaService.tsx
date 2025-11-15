@@ -19,10 +19,7 @@ export const getFacturaById = async (id: string): Promise<Factura> => {
   return res.data;
 };
 
-export const addFactura = async (factura: Omit<Factura, "_id">): Promise<void> => {
-  const headers = await getAuthHeader();
-  await apiClient.post("/facturas", factura, { headers });
-};
+
 
 export const updateFactura = async (id: string, factura: Factura): Promise<void> => {
   const headers = await getAuthHeader();

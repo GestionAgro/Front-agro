@@ -3,18 +3,21 @@ import type { Remito } from "../entidades/Remitos";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
 import { getRemitoById } from "./RemitoService";
+import Modal from "../componentes/Modal";
 
 const VerRemito = () => {
   const { id } = useParams<{ id: string }>();
   const [remito, setRemito] = useState<Remito | null>(null);
-  const [error, setError] = useState<string>("");
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");;
 
   const obtenerRemito = async () => {
     try {
       const data = await getRemitoById(id!);
       setRemito(data);
-    } catch (err) {
-      setError("Error al obtener el remito");
+    } catch {
+      setMensaje("Error al obtener el remito");
+      setModalError(true);
     }
   };
 
@@ -22,10 +25,10 @@ const VerRemito = () => {
     obtenerRemito();
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
   if (!remito) return null;
 
   return (
+    <>
     <div className="ver-factura">
       <h2>Remito Nº {remito.numero_remito}</h2>
       <p><strong>Fecha:</strong> <span>{new Date(remito.fecha).toLocaleDateString()}</span></p>
@@ -45,9 +48,13 @@ const VerRemito = () => {
       <span>{typeof remito.recibido_por === "string"
       ? remito.recibido_por
       : remito.recibido_por?.nombre ?? "Sin asignar"}
-  </span>
-</p>
+      </span>
+    </p>
   </div>
+  <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+    <p>{mensaje}</p>
+  </Modal>
+  </>
   );
 };
 

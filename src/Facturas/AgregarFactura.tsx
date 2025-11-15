@@ -19,7 +19,7 @@ const AgregarFactura = () => {
   });
 
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [personas, setPersonas] = useState<Persona[]>([]);
 
@@ -28,8 +28,10 @@ const AgregarFactura = () => {
     try {
       const data = await getAllPersonas();
       setPersonas(data);
-    } catch (err) {
-      console.error("Error al traer personas", err);
+    } catch {
+      setMensaje("Error al traer personas");
+      setModalError(true);
+      setTimeout(() => setModalError(false), 2000);
     }
   };
   fetchPersonas();
@@ -42,11 +44,18 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+    const hoy = new Date();
+    const fechaFactura = new Date(form.fecha);
+    if (fechaFactura > hoy) {
+    setMensaje("Error: la fecha no puede ser futura");
+    setModalError(true);
+    return;
+  }
 
   try {
     if (!auth.currentUser) {
       setMensaje("Usuario no autenticado");
-      setModalOpen(true);
+      setModalError(true);
       return;
     }
 
@@ -59,20 +68,21 @@ const handleSubmit = async (e: React.FormEvent) => {
     });
 
     setMensaje("Factura agregada con éxito");
-    setModalOpen(true);
+    setModalError(true);
     setTimeout(() => {
-      setModalOpen(false);
+      setModalError(false);
       navigate("/facturas");
     }, 1500);
-  } catch (err) {
-    setMensaje("Error al crear la factura");
-    setModalOpen(true);
-    setTimeout(() => setModalOpen(false), 2000);
+  } catch (err:any) {
+    if (err.response?.status === 400) {
+      setMensaje("Error: el número de factura ya está registrado");
+      }else{
+        setMensaje("Error al crear la factura")
+      }
+    setModalError(true);
+    setTimeout(() => setModalError(false), 2000);
   }
 };
-
-
-
 
   return (
     <div className="contenedor">
@@ -127,15 +137,14 @@ const handleSubmit = async (e: React.FormEvent) => {
       </option>
       ))}
        </select>
-        <select name="estado" value={form.estado} onChange={handleChange}>
-          <option value="PENDIENTE">Pendiente</option>
-          <option value="IMPUTADA">Imputada</option>
-        </select>
+        <input type="hidden" name="estado" value="PENDIENTE" />
+
 
         <button type="submit" className="btn-agregar">Guardar</button>
       </form>
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
         <p>{mensaje}</p>
       </Modal>
     </div>

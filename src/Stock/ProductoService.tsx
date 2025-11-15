@@ -3,7 +3,6 @@ import { auth } from "../config/FirebaseConfig";
 import type { AuditoriaStock } from "../entidades/AuditoriaStock";
 import type { Producto } from "../entidades/Producto";
 
-
 const getAuthHeader = async () => {
   if (!auth.currentUser) throw new Error("Usuario no autenticado");
   const token = await auth.currentUser.getIdToken();

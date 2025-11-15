@@ -2,7 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import type { AuditoriaFactura as AuditoriaRemito } from "../entidades/AuditoriaFactura";
+import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
 
 interface AuditoriasRemitoTableProps {
   rows: AuditoriaRemito[];

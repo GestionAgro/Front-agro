@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import apiClient from "../api/apiServer";
 import type { Remito } from "../entidades/Remitos";
 import FormularioEditarRemito from "./FormularioEditarRemito";
 import { auth } from "../config/FirebaseConfig";
 import { getRemitoById, updateRemito } from "./RemitoService";
+import Modal from "../componentes/Modal";
 
 const EditarRemito = () => {
   const { id } = useParams();
@@ -16,19 +16,20 @@ const EditarRemito = () => {
     empresa: "",
     productos: [],
     recibido_por: { _id: "", nombre: "", tipo_persona: "ENCARGADO" },
-    estado: "EN_ESPERA",
+    estado: "PENDIENTE",
   });
 
   const [mensaje, setMensaje] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
     const fetchRemito = async () => {
       try {
         const data = await getRemitoById(id!);
         setRemito(data);
-      } catch (err) {
-        console.error("Error al cargar remito:", err);
+      } catch {
+        setMensaje("Error al cargar el remito");
+        setModalError(true);
       }
     };
 
@@ -49,23 +50,28 @@ const EditarRemito = () => {
     try {
       if (!auth.currentUser) {
         setMensaje("Usuario no autenticado");
-        setModalOpen(true);
+        setModalError(true);
         return;
       }
       await updateRemito(id!, {fecha: remito.fecha,empresa: remito.empresa,});
 
       navigate("/remitos");
-    } catch (err) {
-      console.error("Error al actualizar remito:", err);
+    } catch {
       setMensaje("Error al actualizar remito");
-      setModalOpen(true);
+      setModalError(true);
     }
   };
 
   return (
+    <>
     <div className="contenedor-formulario">
       <FormularioEditarRemito remito={remito} onChange={handleChange} onSubmit={handleSubmit} />
     </div>
+
+    <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+    <p>{mensaje}</p>
+  </Modal>
+  </>
   );
 };
 

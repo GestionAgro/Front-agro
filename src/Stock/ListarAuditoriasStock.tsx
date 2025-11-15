@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import AuditoriasStockTable from "./AuditoriaStockTable";
 import type { AuditoriaStock } from "../entidades/AuditoriaStock";
 import { getAllAuditoriasStock } from "./ProductoService";
+import Modal from "../componentes/Modal";
 
 const ListarAuditoriasStock = () => {
   const [auditorias, setAuditorias] = useState<AuditoriaStock[]>([]);
-  const [error, setError] = useState<string>("");
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
     const obtenerAuditorias = async () => {
@@ -13,7 +15,8 @@ const ListarAuditoriasStock = () => {
         const data = await getAllAuditoriasStock();
         setAuditorias(data);
       } catch (err) {
-        setError("Error al obtener las auditorías de stock");
+        setMensaje("Error al obtener las auditorías de stock");
+        setModalError(true);
       }
     };
     obtenerAuditorias();
@@ -22,8 +25,10 @@ const ListarAuditoriasStock = () => {
   return (
     <div className="contenedor">
       <h1>Auditorías de Stock</h1>
-      {error && <p>{error}</p>}
       <AuditoriasStockTable rows={auditorias} />
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
+      </Modal>
     </div>
   );
 };

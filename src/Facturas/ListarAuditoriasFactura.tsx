@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import AuditoriasFacturaTable from "./AuditoriasFacturaTable";
 import type { AuditoriaFactura } from "../entidades/AuditoriaFactura";
 import { getAllAuditoriasFactura } from "./FacturaService";
+import Modal from "../componentes/Modal";
 
 const ListarAuditorias = () => {
   const [auditorias, setAuditorias] = useState<AuditoriaFactura[]>([]);
-  const [error, setError] = useState<string>("");
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
 
   useEffect(() => {
     const obtenerAuditorias = async () => {
@@ -14,7 +16,8 @@ const ListarAuditorias = () => {
         const data = await getAllAuditoriasFactura();
         setAuditorias(data);
       } catch (err) {
-        setError("Error al obtener las auditorías");
+        setMensaje("Error al obtener las auditorías");
+        setModalError(true);
       }
     };
     obtenerAuditorias();
@@ -23,8 +26,10 @@ const ListarAuditorias = () => {
   return (
     <div className="contenedor">
       <h1>Auditorías de Facturas</h1>
-      {error && <p>{error}</p>}
       <AuditoriasFacturaTable rows={auditorias} />
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
+      </Modal>
     </div>
   );
 };

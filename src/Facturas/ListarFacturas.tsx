@@ -8,21 +8,22 @@ import { auth } from "../config/FirebaseConfig";
 import { useAuth } from "../componentes/AuthContex";
 import { deleteFactura, getAllFacturas } from "./FacturaService";
 import { getAllRemitos } from "../Remitos/RemitoService";
+import type { Remito } from "../entidades/Remitos";
+import type { Factura } from "../entidades/Factura";
 
 
 const ListarFacturas = () => {
   const navigate = useNavigate();
   const [facturas, setFacturas] = useState<any[]>([]);
-  const [error, setError] = useState<string>("");
-
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  const [facturaSeleccionada, setFacturaSeleccionada] = useState<any>(null);
+  const [facturaSeleccionada, setFacturaSeleccionada] = useState<Factura | null>(null);
 
   const [modalAsociarOpen, setModalAsociarOpen] = useState(false);
   const [remitoInput, setRemitoInput] = useState("");
-  const [remitosDisponibles, setRemitosDisponibles] = useState<any[]>([]);
+  const [remitosDisponibles, setRemitosDisponibles] = useState<Remito[]>([]);
   const { hasPermission } = useAuth();
 
   useEffect(() => {
@@ -30,8 +31,9 @@ const ListarFacturas = () => {
       try {
         const data = await getAllFacturas();
         setFacturas(data);
-      } catch (err: any) {
-        setError("Error al obtener las facturas");
+      } catch {
+        setMensaje("Error al obtener las facturas");
+        setModalError(true);
       }
     };
     obtenerFacturas();
@@ -41,32 +43,39 @@ const ListarFacturas = () => {
     const obtenerRemitosEnEspera = async () =>{
       try{
         const data = await getAllRemitos();
-        const filtrados= data.filter((r:any) => r.estado === "EN_ESPERA");
+        const filtrados= data.filter((r) => r.estado === "PENDIENTE");
         setRemitosDisponibles(filtrados);
-      } catch (err) {
-        console.error("error al obtener remitos", err);
+      } catch {
+        setMensaje("Error al obtener los remitos");
+        setModalError(true);
       }
     };
     obtenerRemitosEnEspera();
   }, [])
 
-  const confirmarEliminar = (factura: any) => {
+  const confirmarEliminar = (factura: Factura) => {
     setFacturaSeleccionada(factura);
     setModalOpen(true);
   };
 
   const eliminarFactura = async () => {
+    if (!facturaSeleccionada?._id) {
+    setMensaje("No hay factura seleccionada");
+    setModalError(true);
+    return;
+  }
     try {
       await deleteFactura(facturaSeleccionada._id)
-      setFacturas(facturas.filter((f) => f._id !== facturaSeleccionada._id));
+      setFacturas((prev)=> prev.filter((f) => f._id !== facturaSeleccionada._id));
       setModalOpen(false);
-    } catch (err) {
-      alert("Error al eliminar la factura");
+    } catch {
+      setMensaje("Error al eliminar la factura");
+      setModalError(true);
     }
   };
 
 
-  const abrirModalAsociar = (factura: any) => {
+  const abrirModalAsociar = (factura: Factura) => {
     setFacturaSeleccionada(factura);
     setRemitoInput("");
     setModalAsociarOpen(true);
@@ -74,7 +83,16 @@ const ListarFacturas = () => {
 
 
   const asociarRemito = async () => {
-    if (!remitoInput) return alert("Ingrese un número de remito");
+    if (!remitoInput) {
+      setMensaje("Ingrese un número de remito");
+      setModalError(true);
+      return;
+    }
+    if (!facturaSeleccionada) {
+     setMensaje("No hay factura seleccionada");
+      setModalError(true);
+      return;
+  }
 
     try {
       if (!auth.currentUser) {
@@ -101,8 +119,9 @@ const ListarFacturas = () => {
       );
 
       setModalAsociarOpen(false);
-    } catch (err: any) {
-      alert("Error al asociar el remito: " + err.message);
+    } catch {
+     setMensaje("Error al asociar el remito");
+     setModalError(true);
     }
   };
 
@@ -111,8 +130,6 @@ const ListarFacturas = () => {
       <div className="header-remitos">
         <h1>Lista de Facturas</h1>
       </div>
-
-      {error && <p className="error">{error}</p>}
 
       <div className="filtro-boton-container">
         {hasPermission("crear") && (
@@ -172,6 +189,10 @@ const ListarFacturas = () => {
           <button onClick={() => setModalAsociarOpen(false)}>Cancelar</button>
           <button onClick={asociarRemito}>Asociar</button>
         </div>
+      </Modal>
+
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
       </Modal>
     </div>
   );

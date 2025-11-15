@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "../config/FirebaseConfig";
 import "./css/auth.css"
 
 type Rol = "ADMINISTRADOR" | "USUARIO";
 
 interface AuthContextType {
-  user: any;
+  user: User | null;
   rol: Rol | null;
   hasPermission: (accion: string) => boolean;
   loading: boolean;
@@ -20,7 +20,7 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [rol, setRol] = useState<Rol | null>(null);
   const [loading, setLoading] = useState(true);
 

@@ -12,7 +12,7 @@ const AgregarProducto = () => {
   });
 
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -29,10 +29,10 @@ const AgregarProducto = () => {
     await addProducto(form);
 
     setMensaje("Producto agregado con éxito");
-    setModalOpen(true);
+    setModalError(true);
 
     setTimeout(() => {
-      setModalOpen(false);
+      setModalError(false);
       navigate("/productos");
     }, 1500);
   }
@@ -42,8 +42,8 @@ const AgregarProducto = () => {
     } else {
       setMensaje("Error al agregar el producto");
     }
-    setModalOpen(true);
-    setTimeout(() => setModalOpen(false), 3000);
+    setModalError(true);
+    setTimeout(() => setModalError(false), 2000);
   }
 };
 
@@ -84,7 +84,7 @@ const AgregarProducto = () => {
         <button type="submit" className="btn-agregar">Guardar</button>
       </form>
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
         <p>{mensaje}</p>
       </Modal>
     </div>

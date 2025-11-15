@@ -1,0 +1,26 @@
+.object-viewer {
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.object-line {
+  margin-bottom: 4px;
+}
+
+.object-line strong {
+  color: #444;
+  margin-right: 6px;
+}
+
+.valor-vacio {
+  color: #d64545; /* rojo visible */
+  font-style: italic;
+  font-weight: 500;
+  display: inline-block;
+}

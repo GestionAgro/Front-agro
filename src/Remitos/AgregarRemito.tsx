@@ -14,7 +14,7 @@ const AgregarRemito = () => {
     empresa: "",
     productos: [] as { nombre_producto: string; cantidad: number; unidad: string }[],
     recibido_por: "",
-    estado: "EN_ESPERA",
+    estado: "PENDIENTE",
   });
 
   const [nuevoProducto, setNuevoProducto] = useState({
@@ -24,16 +24,22 @@ const AgregarRemito = () => {
   });
 
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [personas, setPersonas] = useState<Persona[]>([]);
 
 
   useEffect(() => {
     const fetchPersonas = async () => {
+      try{
       const data = await getAllPersonas();
       setPersonas(data);
-    };
+    } catch {
+      setMensaje("Error al cargar las personas");
+      setModalError(true);
+      setTimeout(() => setModalError(false), 2000);
+      }
+    }
     fetchPersonas();
   }, []);
 
@@ -66,10 +72,18 @@ const AgregarRemito = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const hoy = new Date();
+    const fechaRemito = new Date(form.fecha);
+    if (fechaRemito > hoy) {
+    setMensaje("Error: la fecha no puede ser futura");
+    setModalError(true);
+    return;
+  }
+
     try {
       if(!auth.currentUser){
         setMensaje("usuario no autenticado");
-        setModalOpen(true);
+        setModalError(true);
         return;
       }
       const token = await auth.currentUser.getIdToken();
@@ -78,17 +92,23 @@ const AgregarRemito = () => {
       });
 
       setMensaje("Remito agregado con éxito");
-      setModalOpen(true);
+      setModalError(true);
 
       setTimeout(() => {
-        setModalOpen(false);
+        setModalError(false);
         navigate("/remitos");
       }, 1500);
-    } catch (err) {
-      console.error(err);
-      setMensaje("Error al crear el remito");
-      setModalOpen(true);
-      setTimeout(() => setModalOpen(false), 2000);
+
+    } catch (err: any) {
+
+      if (err.response?.status === 400) {
+      setMensaje("Error: el número de remito ya está registrado");
+      }else{
+        setMensaje("Error al crear el remito")
+      }
+
+      setModalError(true);
+      setTimeout(() => setModalError(false), 2000);
     }
   };
 
@@ -181,19 +201,18 @@ const AgregarRemito = () => {
           ))}
         </select>
 
-        <select name="estado" value={form.estado} onChange={handleChange}>
-          <option value="EN_ESPERA">En espera</option>
-          <option value="FACTURADO">Facturado</option>
-        </select>
+        <input type="hidden" name="estado" value="PENDIENTE" />
 
         <button type="submit" className="btn-agregar">Guardar</button>
       </form>
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
         <p>{mensaje}</p>
-      </Modal>
+        </Modal>
     </div>
   );
 };
 
 export default AgregarRemito;
+
+

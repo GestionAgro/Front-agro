@@ -4,8 +4,12 @@ export type EstadoFactura =  "PENDIENTE" |  "IMPUTADA";
 
 export type TipoFactura =  "A" | "B" | "C";
 
+export interface TotalPorMes {
+  mes: number;
+  totalImporte: number;
+}
 
-export type Factura = {
+export interface Factura  {
     _id?: string;
     numero_remito: number;
     numero_factura: number;

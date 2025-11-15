@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import apiClient from "../api/apiServer";
 import type { Persona } from "../entidades/Persona";
 import FormularioEditarPersona from "./FormularioEditarPersona";
 import { getPersonaById, updatePersona } from "./PersonaService";
+import Modal from "../componentes/Modal";
 
 const EditarPersona = () => {
   const { id } = useParams();
@@ -15,17 +15,18 @@ const EditarPersona = () => {
   });
 
   const [mensaje, setMensaje] = useState("");
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
+    if(!id)return;
+
     const fetchPersona = async () => {
       try {
-        if(id){
         const data = await getPersonaById(id);
         setPersona(data);
-        }
-      } catch (err) {
-        console.error("Error cargando persona:", err);
+      } catch {
         setMensaje("Error al cargar la persona");
+        setModalError(true);
       }
     };
 
@@ -45,22 +46,26 @@ const EditarPersona = () => {
       navigate("/empleados");
 
       }
-    } catch (err) {
-      console.error("Error actualizando empleado:", err);
+    } catch {
       setMensaje("Error actualizando empleado");
+      setModalError(true);
     }
   };
 
   return (
+    <>
     <div className="contenedor-formulario">
       <FormularioEditarPersona
         persona={persona}
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
-
-      {mensaje && <p className="text-danger mt-3">{mensaje}</p>}
     </div>
+
+    <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+      <p>{mensaje}</p>
+  </Modal>
+ </>
   );
 };
 

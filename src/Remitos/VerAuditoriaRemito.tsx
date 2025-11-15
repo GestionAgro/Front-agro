@@ -3,79 +3,22 @@ import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
 import "../Facturas/css/Ver.css";
 import { useParams } from "react-router-dom";
 import { getAuditoriaRemitoById } from "./RemitoService";
-
-
-const formatKey = (key: string) => {
-  return key
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, c => c.toUpperCase());
-};
-
-const ObjectViewer = ({ data }: { data: any }) => {
-  if (data === null || data === undefined)
-    return <span className="valor-vacio">-</span>;
-
-  if (typeof data !== "object") {
-    const isEmpty = data === "-" || data === null || data === "";
-    return <span className={isEmpty ? "valor-vacio" : ""}>{String(data)}</span>;
-  }
-
-  if (Array.isArray(data)) {
-    return (
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>
-            <ObjectViewer data={item} />
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  return (
-    <ul>
-      {Object.entries(data).map(([key, value]) => (
-        <li key={key}>
-          <strong>{formatKey(key)}:</strong>
-          {typeof value === "object" && value !== null ? (
-            <ObjectViewer data={value} />
-          ) : (
-            <span className={value === "-" || value === null || value === "" ? "valor-vacio" : ""}>
-              {typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)
-                ? new Date(value).toLocaleDateString("es-AR")
-                : String(value)}
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-
-const safeParse = (value: any) => {
-  if (!value) return null;
-  if (typeof value === "string") {
-    try {
-      return JSON.parse(value);
-    } catch {
-      return value;
-    }
-  }
-  return value;
-};
+import ObjectViewer, { safeParse } from "../componentes/ObjectViewer";
+import Modal from "../componentes/Modal";
 
 const VerAuditoriaRemito = () => {
   const { id } = useParams<{ id: string }>();
   const [auditoria, setAuditoria] = useState<AuditoriaRemito | null>(null);
-  const [error, setError] = useState<string>("");
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");
 
   const obtenerAuditoria = async () => {
     try {
       const data = await getAuditoriaRemitoById(id!);
       setAuditoria(data);
     } catch {
-      setError("Error al obtener la auditoría");
+     setMensaje("Error al obtener la auditoría");
+     setModalError(true);
     }
   };
 
@@ -83,10 +26,10 @@ const VerAuditoriaRemito = () => {
     if (id) obtenerAuditoria();
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
   if (!auditoria) return null;
 
   return (
+    <>
     <div className="ver-factura">
       <h2>Auditoría de Remito</h2>
       <p><strong>Numero Remito:</strong> <span>{auditoria.numero_remito}</span></p>
@@ -100,6 +43,12 @@ const VerAuditoriaRemito = () => {
       <p><strong>Valor Nuevo:</strong></p>
       <ObjectViewer data={safeParse(auditoria.valor_nuevo)} />
     </div>
+
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
+      </Modal>
+
+    </>
   );
 };
 

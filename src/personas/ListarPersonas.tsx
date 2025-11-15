@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import "../Remitos/css/ListaRemitos.css";
 import Modal from "../componentes/Modal";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +9,11 @@ import { deletePersona, getAllPersonas } from "./PersonaService";
 
 const ListarEmpleados = () => {
   const [empleados, setEmpleados] = useState<Persona[]>([]);
-  const [error, setError] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState<Persona | null>(null);
+
   const navigate = useNavigate();
     const { hasPermission } = useAuth();
 
@@ -21,8 +22,9 @@ const ListarEmpleados = () => {
       try {
         const data = await getAllPersonas();
         setEmpleados(data);
-      } catch (err) {
-        setError("Error al obtener los empleados :(");
+      } catch {
+        setMensaje("Error al obtener los empleados");
+        setModalError(true);
       }
     };
     obtenerEmpleados();
@@ -34,14 +36,15 @@ const ListarEmpleados = () => {
   };
 
   const eliminarEmpleado = async () => {
+    if (!empleadoSeleccionado?._id) return;
+
     try {
-      if (empleadoSeleccionado?._id) {
       await deletePersona(empleadoSeleccionado._id);
-      setEmpleados(empleados.filter((e) => e._id !== empleadoSeleccionado?._id));
+      setEmpleados(prev => prev.filter((e) => e._id !== empleadoSeleccionado?._id));
       setModalOpen(false);
-      }
-    } catch (err) {
-      alert("Error al eliminar el empleado");
+    } catch {
+     setMensaje("Error al eliminar el empleado");
+     setModalError(true);
     }
   };
 
@@ -50,7 +53,6 @@ const ListarEmpleados = () => {
       <div className="header-remitos">
         <h1>Lista de Empleados</h1>
       </div>
-      {error && <p className="error">{error}</p>}
 
       <div className="filtro-boton-container">
       {hasPermission("crear") && (
@@ -65,14 +67,16 @@ const ListarEmpleados = () => {
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         <h2>¿Eliminar empleado?</h2>
         {empleadoSeleccionado && (
-          <p>
-            ¿Seguro que querés borrar a {empleadoSeleccionado.nombre}?
-          </p>
+          <p>¿Seguro que querés borrar a {empleadoSeleccionado.nombre}?</p>
         )}
+
         <div className="modal-actions">
           <button onClick={() => setModalOpen(false)}>Cancelar</button>
           <button onClick={eliminarEmpleado}>Confirmar</button>
         </div>
+      </Modal>
+     <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+      <p>{mensaje}</p>
       </Modal>
     </div>
   );

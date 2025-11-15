@@ -1,6 +1,6 @@
 export type Rol = "USUARIO" | "ADMINISTRADOR";
 
-export type Usuario = {
+export interface Usuario {
   _id?: string;
   nombre: string;
   email: string;

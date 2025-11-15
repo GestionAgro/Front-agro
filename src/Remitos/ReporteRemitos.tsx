@@ -2,22 +2,28 @@ import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 import { getReporteMensualRemitos } from "./RemitoService";
+import Modal from "../componentes/Modal";
+import type { Remito } from "../entidades/Remitos";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const ReporteRemitos = () => {
-  const [remitos, setRemitos] = useState<any>([]);
+  const [remitos, setRemitos] = useState<Remito []>([]);
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
 
   useEffect(() => {
-    const fetchData = async () => {
+    const obtenerTotalesPorMes = async () => {
       try {
         const data = await getReporteMensualRemitos()
         setRemitos(data);
-      } catch (error) {
-        console.error("Error al obtener los datos", error);
+      } catch {
+        setMensaje("Error al obtener el reporte mensual de remitos");
+        setModalError(true);
       }
     };
-    fetchData();
+    obtenerTotalesPorMes();
   }, []);
 
   const chartData = {
@@ -54,13 +60,18 @@ const ReporteRemitos = () => {
     },
   };
   return (
+    <>
   <div
     style={{maxWidth: "800px",margin: "0 auto",padding: "20px",}}>
-    <h2 style={{ textAlign: "center", marginBottom: "100px" }}></h2>
+    <div style={{ height: "60px" }}></div>
     <div style={{ height: "400px" }}>
       <Bar data={chartData} options={chartOptions} />
     </div>
   </div>
+       <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
+      </Modal>
+  </>
 );
 };
 

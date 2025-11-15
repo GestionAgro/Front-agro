@@ -1,4 +1,4 @@
-export type AuditoriaFactura = {
+export interface AuditoriaFactura {
   _id?: string;
   id_factura: string;
   id_usuario: string;

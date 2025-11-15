@@ -16,12 +16,12 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
 
   const columns: GridColDef[] = [
     { field: "numero_remito", headerName: "Número", flex: 1 },
-    { field: "fecha", headerName: "Fecha", flex: 1,
+    { field: "fecha", headerName: "Fecha", flex: 1.5,
       valueGetter: (value, row) =>
         new Date(row.fecha).toLocaleDateString()
     },
-    { field: "empresa", headerName: "Empresa", flex: 1 },
-    { field: "productos", headerName: "Detalle", flex: 1 ,
+    { field: "empresa", headerName: "Empresa", flex: 2 },
+    { field: "productos", headerName: "Detalle", flex: 1.5 ,
      valueGetter: (value, row) =>
     row.productos
       ?.map((p: any) => `${p.nombre_producto}: ${p.cantidad}`)
@@ -41,7 +41,7 @@ export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {
       valueGetter: (value, row) => row.recibido_por?.nombre || "Sin asignar"
     },
     {
-       field: "estado",headerName: "Estado",flex: 1,
+       field: "estado",headerName: "Estado",flex: 1.5,
       valueGetter: (value, row) => {
       if (!row.estado) return "";
       return row.estado.toLowerCase().replace("_", " ");

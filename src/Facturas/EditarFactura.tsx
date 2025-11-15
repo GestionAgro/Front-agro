@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import apiClient from "../api/apiServer";
 import { type Factura } from "../entidades/Factura";
 import FormularioEditarFactura from "./FormularioEditarFactura";
-import { auth } from "../config/FirebaseConfig";
 import { getFacturaById, updateFactura } from "./FacturaService";
+import Modal from "../componentes/Modal";
 
 const EditarFactura = () => {
   const { id } = useParams();
@@ -24,16 +23,18 @@ const EditarFactura = () => {
     estado: "PENDIENTE",
   });
 
-  const [modalOpen, setModalOpen] = useState(false);
   const [mensaje, setMensaje] = useState("");
+  const [modalError, setModalError] = useState(false);
+
 
   useEffect(() => {
     const fetchFactura = async () => {
       try {
         const data = await getFacturaById(id!);
         setFactura(data);
-      } catch (err) {
-        console.error("Error al cargar factura:", err);
+      } catch {
+        setMensaje("Error al cargar factura");
+        setModalError(true);
       }
     };
 
@@ -63,12 +64,14 @@ const EditarFactura = () => {
     try {
       await updateFactura(id!,factura);
       navigate("/facturas");
-    } catch (err) {
-      console.error("Error al actualizar factura:", err);
+    } catch {
+      setMensaje("Error al actualizar factura:");
+      setModalError(true);
     }
   };
 
   return (
+    <>
     <div className="contenedor-formulario">
       <FormularioEditarFactura
         factura={factura}
@@ -77,6 +80,11 @@ const EditarFactura = () => {
         onSubmit={handleSubmit}
       />
     </div>
+
+    <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+      <p>{mensaje}</p>
+  </Modal>
+  </>
   );
 };
 

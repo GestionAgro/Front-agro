@@ -4,6 +4,7 @@ import type { Producto } from "../entidades/Producto";
 import FormularioEditarProducto from "./FormularioEditarProducto";
 import { auth } from "../config/FirebaseConfig";
 import { getProductoById, updateProducto } from "./ProductoService";
+import Modal from "../componentes/Modal";
 
 const EditarProducto = () => {
   const { id } = useParams();
@@ -15,15 +16,16 @@ const EditarProducto = () => {
   });
 
   const [mensaje, setMensaje] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
     const fetchProducto = async () => {
       try {
         const data = await getProductoById(id!);
         setProducto(data);
-      } catch (err) {
-        console.error("Error cargando producto:", err);
+      } catch {
+        setMensaje("Error cargando producto:");
+        setModalError(true);
       }
     };
 
@@ -44,20 +46,20 @@ const EditarProducto = () => {
     try {
       if (!auth.currentUser) {
         setMensaje("Usuario no autenticado");
-        setModalOpen(true);
+        setModalError(true);
         return;
       }
       await updateProducto(id!, producto);
       navigate("/productos");
     }
-     catch (err) {
-      console.error("Error actualizando producto:", err);
+     catch {
       setMensaje("Error al actualizar el producto");
-      setModalOpen(true);
+      setModalError(true);
     }
   };
 
   return (
+    <>
     <div className="contenedor-formulario">
       <FormularioEditarProducto
         producto={producto}
@@ -65,6 +67,11 @@ const EditarProducto = () => {
         onSubmit={handleSubmit}
       />
     </div>
+
+    <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+    <p>{mensaje}</p>
+  </Modal>
+    </>
   );
 };
 

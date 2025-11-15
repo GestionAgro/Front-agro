@@ -15,9 +15,9 @@ export default function ProductosTable({ rows, onDelete, onAjustarStock}: Produc
   const { hasPermission } = useAuth();
 
   const columns: GridColDef[] = [
-    { field: "nombre_producto", headerName: "Nombre", flex: 1 },
-    { field: "cantidad_actual", headerName: "Cantidad Actual", flex: 1 },
-    { field: "unidad", headerName: "Unidad", flex: 1},
+    { field: "nombre_producto", headerName: "Nombre", flex: 0.5 },
+    { field: "cantidad_actual", headerName: "Cantidad Actual", flex: 0.5 },
+    { field: "unidad", headerName: "Unidad", flex: 0.5},
   ];
 
     if ( hasPermission("editar") || hasPermission("eliminar") || hasPermission("reducir")) {

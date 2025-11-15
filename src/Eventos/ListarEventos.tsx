@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import apiClient from "../api/apiServer";
 import EventosTable from "./EventosTable";
 import type { Evento } from "../entidades/Evento";
 import { getAllEventos } from "./EventoService";
+import Modal from "../componentes/Modal";
 
 const ListarEventos = () => {
   const [eventos, setEventos] = useState<Evento[]>([]);
-  const [error, setError] = useState<string>("");
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
     const obtenerEventos = async () => {
@@ -14,7 +15,8 @@ const ListarEventos = () => {
         const data = await getAllEventos();
         setEventos(data);
       } catch {
-        setError("Error al obtener los eventos");
+        setMensaje("Error al obtener los eventos");
+        setModalError(true);
       }
     };
     obtenerEventos();
@@ -23,8 +25,10 @@ const ListarEventos = () => {
   return (
     <div className="contenedor">
       <h1>Eventos del Sistema</h1>
-      {error && <p className="error">{error}</p>}
       <EventosTable rows={eventos} />
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
+      </Modal>
     </div>
   );
 };

@@ -11,6 +11,8 @@ import { deleteRemito, getAllRemitos } from "./RemitoService";
     const navigate = useNavigate();
     const [remitos, setRemitos] = useState<any[]> ([]);
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalError, setModalError] = useState(false);
+    const [mensaje, setMensaje] = useState("");
     const [remitoSeleccionado, setRemitoSeleccionado] = useState<any>(null);
     const { hasPermission } = useAuth();
 
@@ -18,11 +20,12 @@ import { deleteRemito, getAllRemitos } from "./RemitoService";
     useEffect(()=>{
     const obtenerRemitos = async () => {
         try{
-            const data = await getAllRemitos();
-            setRemitos(data);
-        } catch (err:any){
-            console.error("error al obteenr los remitos :(");
-        }
+          const data = await getAllRemitos();
+          setRemitos(data);
+        } catch {
+        setMensaje("Error al obtener los remitos");
+        setModalError(true);
+      }
     };
     obtenerRemitos();
 }, []);
@@ -34,12 +37,15 @@ import { deleteRemito, getAllRemitos } from "./RemitoService";
   };
 
   const eliminarRemito = async () => {
+    if (!remitoSeleccionado) return;
+
     try {
       await deleteRemito(remitoSeleccionado._id);
-      setRemitos(remitos.filter((r) => r._id !== remitoSeleccionado._id));
+      setRemitos((prev) => prev.filter((r) => r._id !== remitoSeleccionado._id));
       setModalOpen(false);
-    } catch (err) {
-      alert("Error al eliminar el remito");
+    } catch {
+      setMensaje("Error al eliminar el remito");
+      setModalError(true);
     }
   };
 
@@ -47,6 +53,7 @@ import { deleteRemito, getAllRemitos } from "./RemitoService";
     <div className="contenedor">
       <div className="header-remitos">
         <h1>Lista de Remitos</h1>
+
         {hasPermission("crear") && (
         <div className="filtro-boton-container">
         <button onClick={() => navigate("/remitos/nuevo")} className="btn-agregar">
@@ -71,6 +78,9 @@ import { deleteRemito, getAllRemitos } from "./RemitoService";
           <button onClick={() => setModalOpen(false)}>Cancelar</button>
           <button onClick={eliminarRemito}>Confirmar</button>
         </div>
+      </Modal>
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
       </Modal>
     </div>
   );

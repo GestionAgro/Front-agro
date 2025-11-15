@@ -12,7 +12,7 @@ const AgregarEmpleado = () => {
   });
 
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -24,16 +24,16 @@ const AgregarEmpleado = () => {
     try {
       await createPersona(form);
       setMensaje("Empleado agregado con éxito");
-      setModalOpen(true);
+      setModalError(true);
 
       setTimeout(() => {
-        setModalOpen(false);
+        setModalError(false);
         navigate("/empleados");
       }, 1500);
     } catch (err) {
       setMensaje("Error al agregar el empleado");
-      setModalOpen(true);
-      setTimeout(() => setModalOpen(false), 2000);
+      setModalError(true);
+      setTimeout(() => setModalError(false), 2000);
     }
   };
 
@@ -58,7 +58,8 @@ const AgregarEmpleado = () => {
         <button type="submit" className="btn-agregar">Guardar</button>
       </form>
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
         <p>{mensaje}</p>
       </Modal>
     </div>

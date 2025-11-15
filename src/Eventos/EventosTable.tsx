@@ -15,6 +15,7 @@ export default function EventosTable({ rows }: EventosTableProps) {
     { field: "entidad_afectada", headerName: "Entidad", flex: 1 },
     { field: "tipo_operacion", headerName: "Operación", flex: 1 },
     { field: "descripcion", headerName: "Descripción", flex: 2 },
+    { field: "nombre", headerName: "Persona", flex: 1 },
     {
       field: "fechaYhora",
       headerName: "Fecha y Hora",

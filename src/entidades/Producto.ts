@@ -1,4 +1,4 @@
-export type Producto = {
+export interface Producto {
   _id?: string;
   nombre_producto: string;
   cantidad_actual: number;

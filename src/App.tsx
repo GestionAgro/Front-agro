@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./config/FirebaseConfig";
 import Login from "./Registro/Login";
 import Registro from "./Registro/Registro";
 import Home from "./Registro/Home";
@@ -84,7 +81,7 @@ export default function App() {
         <Route path="/productos/nuevo" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <AgregarProducto /> </ProtectedRoute>} />
         <Route path="/producto/editar/:id" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <EditarProducto /> </ProtectedRoute>} />
         <Route path="/auditorias-stock" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <ListarAuditoriasStock /> </ProtectedRoute>} />
-        <Route path="/auditorias-stock/:id" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <VerAuditoriaStock /> :</ProtectedRoute>} />
+        <Route path="/auditorias-stock/:id" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}> <VerAuditoriaStock /> </ProtectedRoute>} />
 
         {/* Rutas de usuarios */}
         <Route path="/usuarios" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}><ListarUsuarios /> </ProtectedRoute>}/>

@@ -18,16 +18,16 @@ export default function FacturasTable({ rows, onDelete, onAsociar }: FacturasTab
   const columns: GridColDef[] = [
     { field: "numero_factura", headerName: "Número", flex: 1 },
     { field: "tipo_factura", headerName: "Tipo", flex: 1 },
-    { field: "empresa", headerName: "Empresa", flex: 1 },
+    { field: "empresa", headerName: "Empresa", flex: 2 },
     { field: "importe", headerName: "Importe", flex: 1 },
-       { field: "fecha", headerName: "Fecha", flex: 1,
+       { field: "fecha", headerName: "Fecha", flex: 1.5,
       valueGetter: (value, row) =>
         new Date(row.fecha).toLocaleDateString()
     },
     {
       field: "estado",
       headerName: "Estado",
-      flex: 1,
+      flex: 1.5,
       valueGetter: (value, row) => row.estado ? row.estado.toLowerCase().replace("_", " ") : "",
     },
     {

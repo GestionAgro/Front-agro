@@ -3,41 +3,31 @@ import type { Remito } from "../entidades/Remitos";
 import { auth } from "../config/FirebaseConfig";
 import type { AuditoriaRemito } from "../entidades/AuditoriaRemito";
 
+const getAuthHeader = async () => {
+  if (!auth.currentUser) throw new Error("Usuario no autenticado");
+  const token = await auth.currentUser.getIdToken();
+  return { Authorization: `Bearer ${token}` };
+};
 
 export const getAllRemitos = async (): Promise<Remito[]> => {
-  const response = await apiClient.get("/remitos");
-  return response.data;
+  const res = await apiClient.get("/remitos");
+  return res.data;
 };
 
 export const getRemitoById = async (id: string): Promise<Remito> => {
-  const response = await apiClient.get(`/remitos/${id}`);
-  return response.data;
+  const res = await apiClient.get(`/remitos/${id}`);
+  return res.data;
 };
 
-export const addRemito = async (remito: Omit<Remito, "_id">) => {
-  if (!auth.currentUser) throw new Error("Usuario no autenticado");
-  const token = await auth.currentUser.getIdToken();
-  const response = await apiClient.post("/remitos", remito, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
-};
 
 export const updateRemito = async (id: string, data: Partial<Remito>) => {
-  if (!auth.currentUser) throw new Error("Usuario no autenticado");
-  const token = await auth.currentUser.getIdToken();
-  const response = await apiClient.put(`/remitos/${id}`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
+  const headers = await getAuthHeader();
+  await apiClient.put(`/remitos/${id}`, data, { headers });
 };
 
 export const deleteRemito = async (id: string) => {
-  if (!auth.currentUser) throw new Error("Usuario no autenticado");
-  const token = await auth.currentUser.getIdToken();
-  await apiClient.delete(`/remitos/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const headers = await getAuthHeader();
+  await apiClient.delete(`/remitos/${id}`, { headers });
 };
 
 export const getAllAuditoriasRemito = async (): Promise<AuditoriaRemito[]> => {

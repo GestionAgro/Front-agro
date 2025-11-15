@@ -11,9 +11,12 @@ import { getAllPersonas } from "../personas/PersonaService";
 
 const ListarProductos = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [error, setError] = useState<string>("");
+
   const [modalEliminarOpen, setModalEliminarOpen] = useState(false);
   const [modalStockOpen, setModalStockOpen] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [mensaje, setMensaje] = useState<string>("")
+
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null);
   const [cantidadStock, setCantidadStock] = useState<number>(0);
   const navigate = useNavigate();
@@ -27,8 +30,9 @@ const ListarProductos = () => {
       try {
         const data = await getAllProductos();
         setProductos( data);
-      } catch (err) {
-        setError("Error al obtener los productos :(");
+      } catch {
+        setMensaje("Error al obtener los productos");
+        setModalError(true);
       }
     };
     obtenerProductos();
@@ -39,8 +43,10 @@ const ListarProductos = () => {
     try {
       const data = await getAllPersonas();
       setPersonas(data);
-    } catch (err) {
-      console.error("Error al obtener personas");
+    } catch {
+      setMensaje("Error al obtener personas");
+      setModalError(true);
+
     }
   };
 
@@ -66,15 +72,17 @@ const ListarProductos = () => {
       setProductos(productos.filter((p) => p._id !== productoSeleccionado?._id));
       setModalEliminarOpen(false);
       }
-    } catch (err) {
-      alert("Error al eliminar el producto");
+    } catch  {
+      setMensaje("Error al eliminar el producto");
+      setModalError(true);
     }
   };
 
 
  const ajustarStock = async () => {
     if (!productoSeleccionado || !personaSeleccionada) {
-    alert("Seleccioná quién retira el producto");
+      setMensaje("Seleccioná quién retira el producto");
+      setModalError(true);
     return;
   }
     try {
@@ -84,8 +92,9 @@ const ListarProductos = () => {
       );
       setModalStockOpen(false);
 
-    } catch (err: any) {
-      alert("Error al ajustar stock: " + err.message);
+    } catch (err) {
+      setMensaje("Error al ajustar stock: stock insuficiente");
+      setModalError(true);
     }
   };
 
@@ -94,7 +103,6 @@ const ListarProductos = () => {
       <div className="header-remitos">
         <h1>Lista de Productos</h1>
       </div>
-      {error && <p className="error">{error}</p>}
       <div className="filtro-boton-container">
       {hasPermission("crear") && (
       <button onClick={() => navigate("/productos/nuevo")}className="btn-agregar"> Agregar Producto
@@ -133,6 +141,7 @@ const ListarProductos = () => {
           <button onClick={() => setModalStockOpen(false)}>Cancelar</button>
           <button onClick={ajustarStock}>Descontar</button>
         </div>
+
         <div className="campo-empleado">
         <select
           value={personaSeleccionada}
@@ -147,6 +156,9 @@ const ListarProductos = () => {
         </select>
         </div>
 
+      </Modal>
+      <Modal isOpen={modalError} onClose={() => setModalError(false)}>
+        <p>{mensaje}</p>
       </Modal>
     </div>
   );
