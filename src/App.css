@@ -3,13 +3,14 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}body, html, #root {
+}
+body, html, #root {
   margin: 0;
   padding: 0;
-  background-color: #f2f2f2; /* gris claro */
+  background-color: #f2f2f2;
   width: 100%;
   height: 100%;
-  overflow-x: hidden; /* evita barras raras */
+  overflow-x: hidden;
 }
 .logo {
   height: 6em;
@@ -52,6 +53,6 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1030; /* por encima del resto */
-  border: none; /* quita líneas raras */
+  z-index: 1030;
+  border: none;
 }

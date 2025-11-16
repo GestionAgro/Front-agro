@@ -87,8 +87,8 @@ export default function App() {
         <Route path="/usuarios" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}><ListarUsuarios /> </ProtectedRoute>}/>
 
          {/* Rutas de eventos */}
-         <Route path="/eventos" element={<ListarEventos />} />
-         <Route path="/eventos/:id" element={<VerEvento />} />
+         <Route path="/eventos"element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}><ListarEventos /> </ProtectedRoute>}/>
+         <Route path="/eventos/:id" element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]}><VerEvento /></ProtectedRoute>} />
 
         {/*rutas de reporte*/}
         <Route path="/reportes" element={user ? <ReporteRemitos /> : <Navigate to="/login" />} />

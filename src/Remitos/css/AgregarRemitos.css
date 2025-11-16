@@ -10,7 +10,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* Título */
+/* Titulo */
 .form-remito h2 {
  text-align: center !important;
   margin-bottom: 15px;
@@ -39,7 +39,7 @@
   box-shadow: 0 0 5px rgba(23, 122, 68, 0.4);
 }
 
-/* Botón */
+/* Boton */
 .form-remito button {
   display: block;
   width: 100%;

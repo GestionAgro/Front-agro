@@ -45,15 +45,15 @@
   background-color: #b9e7c6;
 }
 
-/* listas anidadas limpias */
+/* listas anidadas */
 .ver-factura ul {
-  list-style-type: none; /* sin bullets */
+  list-style-type: none;
   padding-left: 0;
   margin: 6px 0;
 }
 
 .ver-factura ul li {
-  background-color: #ffffff; /* mismo fondo que los p */
+  background-color: #ffffff;
   padding: 8px 12px;
   margin: 4px 0;
   border-radius: 8px;

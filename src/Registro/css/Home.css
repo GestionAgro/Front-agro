@@ -1,6 +1,5 @@
 /* Fondo general */
 body, html, #root {
-  background-color: #f2f2f2;
   margin: 0;
   font-family: Arial, sans-serif;
   height: 100%;
@@ -20,24 +19,14 @@ body, html, #root {
   background-repeat: no-repeat;
   background-attachment: scroll;
 }
-/* Caja del contenido */
-/*.home-container {
-  background-color:rgba(255, 255, 255, 0);;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  margin: 2rem auto;
-  text-align: center;
-}*/
 
-/* Título */
+/* Titulo */
 .home-container h1 {
   color: #333;
   margin-bottom: 1.5rem;
 }
 
-/* Botón cerrar sesión */
+/* Boton cerrar sesion */
 .home-container button {
   background-color: #a8d5ba;
   color: #000;

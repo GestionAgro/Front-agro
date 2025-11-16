@@ -68,7 +68,7 @@
 .google-login {
   width: 100%;
   padding: 0.8rem;
-  background-color: #db4437; /* rojo Google */
+  background-color: #db4437;
   border: none;
   color: #fff;
   font-size: 1rem;
@@ -81,4 +81,14 @@
 
 .google-login:hover {
   background-color: #c33d2e;
+}
+
+.auth-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #7fbf90 !important;
+  z-index: 9999;
 }
