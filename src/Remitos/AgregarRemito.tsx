@@ -100,9 +100,9 @@ const AgregarRemito = () => {
       }, 1500);
 
     } catch (err: any) {
-
+      console.log("ERROR DEL BACK:", err.response?.data);
       if (err.response?.status === 400) {
-      setMensaje("Error: el número de remito ya está registrado");
+      setMensaje(err.response.data.error ||"Error: el número de remito ya está registrado");
       }else{
         setMensaje("Error al crear el remito")
       }

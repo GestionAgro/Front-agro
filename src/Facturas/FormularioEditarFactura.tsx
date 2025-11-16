@@ -33,7 +33,6 @@ const FormularioEditarFactura: React.FC<Props> = ({factura,onChange, onPersonaCh
           value={factura.numero_remito}
           onChange={onChange}
           className="form-control"
-          disabled
         />
       </div>
 
@@ -45,7 +44,6 @@ const FormularioEditarFactura: React.FC<Props> = ({factura,onChange, onPersonaCh
           value={new Date(factura.fecha).toISOString().split("T")[0]}
           onChange={onChange}
           className="form-control"
-          disabled
         />
       </div>
 
