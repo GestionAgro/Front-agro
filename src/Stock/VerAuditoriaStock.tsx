@@ -12,6 +12,8 @@ const VerAuditoriaStock = () => {
   const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
+
+useEffect(() => {
   const obtenerAuditoria = async () => {
     try {
       if(!id) return;
@@ -23,8 +25,7 @@ const VerAuditoriaStock = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) obtenerAuditoria();
+  obtenerAuditoria();
   }, [id]);
 
 

@@ -3,10 +3,11 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../componentes/AuthContex";
+import type { Remito } from "../entidades/Remitos";
 
 interface RemitosTableProps {
   rows: any[];
-  onDelete?: (id: string) => void;
+  onDelete?: (remito: Remito) => void;
 }
 
 export default function RemitosTable({ rows, onDelete }: RemitosTableProps) {

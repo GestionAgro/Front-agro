@@ -8,17 +8,19 @@ const formatKey = (key: string) => {
 };
 
 // Parse si viene como json
-export const safeParse = (value: any) => {
-  if (!value) return null;
-  if (typeof value === "string") {
+export function safeParse(value: any): any {
+  let result = value;
+
+  while (typeof result === "string") {
     try {
-      return JSON.parse(value);
+      result = JSON.parse(result);
     } catch {
-      return value;
+      break;
     }
   }
-  return value;
-};
+
+  return result;
+}
 
 const ObjectViewer = ({ data }: { data: any }) => {
   if (data === null || data === undefined) {

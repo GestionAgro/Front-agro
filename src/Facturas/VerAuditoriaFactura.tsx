@@ -12,6 +12,8 @@ const VerAuditoriaFactura = () => {
   const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
+
+useEffect(() => {
   const obtenerAuditoria = async () => {
     try {
       const data = await getAuditoriaFacturaById(id!);
@@ -22,10 +24,8 @@ const VerAuditoriaFactura = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      obtenerAuditoria();
-    }
+  obtenerAuditoria();
+
   }, [id]);
 
 

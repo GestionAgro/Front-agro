@@ -12,6 +12,8 @@ const VerAuditoriaRemito = () => {
   const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
+
+useEffect(() => {
   const obtenerAuditoria = async () => {
     try {
       const data = await getAuditoriaRemitoById(id!);
@@ -22,8 +24,7 @@ const VerAuditoriaRemito = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) obtenerAuditoria();
+  obtenerAuditoria();
   }, [id]);
 
   if (!auditoria) return null;

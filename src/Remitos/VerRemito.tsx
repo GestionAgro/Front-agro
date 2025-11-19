@@ -11,6 +11,7 @@ const VerRemito = () => {
   const [modalError, setModalError] = useState(false);
   const [mensaje, setMensaje] = useState("");;
 
+useEffect(() => {
   const obtenerRemito = async () => {
     try {
       const data = await getRemitoById(id!);
@@ -21,7 +22,6 @@ const VerRemito = () => {
     }
   };
 
-  useEffect(() => {
     obtenerRemito();
   }, [id]);
 

@@ -5,15 +5,16 @@ import Modal from "../componentes/Modal";
 import RemitosTable from "./RemitosTable";
 import { useAuth } from "../componentes/AuthContex";
 import { deleteRemito, getAllRemitos } from "./RemitoService";
+import type { Remito } from "../entidades/Remitos";
 
 
  const ListarRemitos = () => {
     const navigate = useNavigate();
-    const [remitos, setRemitos] = useState<any[]> ([]);
+    const [remitos, setRemitos] = useState<Remito[]> ([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalError, setModalError] = useState(false);
     const [mensaje, setMensaje] = useState("");
-    const [remitoSeleccionado, setRemitoSeleccionado] = useState<any>(null);
+    const [remitoSeleccionado, setRemitoSeleccionado] = useState<Remito | null>(null);
     const { hasPermission } = useAuth();
 
 
@@ -31,13 +32,16 @@ import { deleteRemito, getAllRemitos } from "./RemitoService";
 }, []);
 
 
-   const confirmarEliminar = (remito: any) => {
+   const confirmarEliminar = (remito: Remito) => {
     setRemitoSeleccionado(remito);
     setModalOpen(true);
   };
 
   const eliminarRemito = async () => {
-    if (!remitoSeleccionado) return;
+    if (!remitoSeleccionado?._id){
+    setMensaje("El remito no tiene ID válido");
+    setModalError(true);
+    return;return;}
 
     try {
       await deleteRemito(remitoSeleccionado._id);

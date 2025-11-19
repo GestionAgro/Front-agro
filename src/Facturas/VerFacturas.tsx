@@ -12,6 +12,7 @@ const VerFactura = () => {
   const [mensaje, setMensaje] = useState("");
 
 
+useEffect(() => {
   const obtenerFactura = async () => {
     try {
       const data = await getFacturaById(id!)
@@ -22,7 +23,6 @@ const VerFactura = () => {
     }
   };
 
-  useEffect(() => {
     obtenerFactura();
   }, [id]);
 
