@@ -41,7 +41,8 @@ import type { Remito } from "../entidades/Remitos";
     if (!remitoSeleccionado?._id){
     setMensaje("El remito no tiene ID válido");
     setModalError(true);
-    return;return;}
+    return;
+  }
 
     try {
       await deleteRemito(remitoSeleccionado._id);

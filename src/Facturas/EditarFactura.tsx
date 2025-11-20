@@ -65,7 +65,7 @@ const EditarFactura = () => {
       await updateFactura(id!,factura);
       navigate("/facturas");
     } catch {
-      setMensaje("Error al actualizar factura:");
+      setMensaje("Error al actualizar factura");
       setModalError(true);
     }
   };
