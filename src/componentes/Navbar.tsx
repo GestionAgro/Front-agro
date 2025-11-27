@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../config/FirebaseConfig";
 import "./Navbar.css";
 import { signOut } from "firebase/auth";
@@ -9,6 +9,8 @@ export default function Navbar() {
   const [show, setShow] = useState(false);
   const [reportesShow, setReportesShow] = useState(false);
   const { hasPermission } = useAuth();
+  const navigate = useNavigate();
+
 
   return (
     <nav className="navbar navbar-dark navbar-custom fixed-top">
@@ -23,6 +25,12 @@ export default function Navbar() {
           onClick={() => setShow(true)}>
           <span className="navbar-toggler-icon"></span>
         </button>
+
+        <button
+        className="btn btn-outline-light ms-2 volver-btn"
+        onClick={() => navigate(-1)}>
+          ← Volver
+          </button>
 
         <div
           className={`offcanvas offcanvas-start offcanvas-custom ${show ? "show" : ""}`}

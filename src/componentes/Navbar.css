@@ -45,3 +45,11 @@
 .offcanvas-backdrop {
   display: none;
 }
+
+.volver-btn {
+  position: absolute;
+  left: 115px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+}
