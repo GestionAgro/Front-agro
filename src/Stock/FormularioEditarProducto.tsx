@@ -4,7 +4,7 @@ import "../Facturas/css/Editar.css";
 
 interface Props {
   producto: Producto;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
 }
 
@@ -34,6 +34,22 @@ const FormularioEditarProducto: React.FC<Props> = ({ producto, onChange, onSubmi
           className="form-control"
           required
         />
+      </div>
+      <div className="mb-3">
+      <label className="form-label">Unidad</label>
+      <select
+        name="unidad"
+        value={producto.unidad}
+        onChange={onChange}
+        className="form-control"
+        required
+       >
+        <option value="">Seleccionar unidad</option>
+        <option value="kg">kg</option>
+        <option value="L">L</option>
+        <option value="ml">ml</option>
+        <option value="unidades">unidades</option>
+        </select>
       </div>
 
       <button type="submit" className="btn btn-primary">

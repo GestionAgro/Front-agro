@@ -13,6 +13,7 @@ const EditarProducto = () => {
   const [producto, setProducto] = useState<Producto>({
     nombre_producto: "",
     cantidad_actual: 0,
+    unidad:"",
   });
 
   const [mensaje, setMensaje] = useState("");
@@ -32,7 +33,7 @@ const EditarProducto = () => {
     fetchProducto();
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setProducto((prev) => ({
       ...prev,
